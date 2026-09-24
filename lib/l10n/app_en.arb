@@ -1,0 +1,48 @@
+{
+  "@@locale": "en",
+
+  "loginTitle": "let's get snappy ✦",
+  "loginEmailLabel": "email",
+  "loginPasswordLabel": "password",
+  "loginDisplayNameLabel": "display name",
+  "loginSignInButton": "sign in",
+  "loginSignUpButton": "create account",
+  "loginToggleToSignUp": "new here? make an account",
+  "loginToggleToSignIn": "already snappy? sign in",
+  "browseTitle": "browse",
+  "browseTabOfficial": "Official",
+  "browseTabCommunity": "Community",
+  "browseFilterNewest": "Newest",
+  "browseFilterPopular": "Popular",
+  "browseFilterFree": "Free",
+  "browseFilterPro": "Pro",
+  "browseLockedSnack": "go pro, unlock everything ✦",
+  "frameDetailUseThisFrame": "use this frame",
+  "frameDetailReport": "report",
+  "frameDetailReportSubmit": "send report",
+  "frameDetailReportSent": "reported, thanks for the heads up",
+  "frameDetailReportHint": "what's off about this one?",
+  "frameDetailSlotCount": "{count} slots",
+  "@frameDetailSlotCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "emptyCommunity": "no frames yet… be the main character and make one",
+  "countdownEnd": "say cheese 📸",
+  "retakeHint": "tap a pic to redo it, no judgment",
+  "resultTitle": "ate. 💅",
+  "resultSave": "save",
+  "resultShare": "share it",
+  "resultAgain": "again!",
+  "reviewContinue": "all good, let's go ✦",
+  "captureSlotLabel": "pic {current} of {total}",
+  "@captureSlotLabel": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "paywallTitle": "go pro, unlock everything ✦",
+  "errorGeneric": "oops, something flopped. try again?"
+}
