@@ -15,7 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FrameDetailState {
 
- Frame get frame; bool get isSubmittingReport; AppException? get error; FrameDetailEffect? get effect;
+ Frame get frame;/// Countdown picked by the user; overrides the frame's default when
+/// capture starts.
+ int get countdownSec; bool get isSubmittingReport; AppException? get error; FrameDetailEffect? get effect;
 /// Create a copy of FrameDetailState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +29,20 @@ $FrameDetailStateCopyWith<FrameDetailState> get copyWith => _$FrameDetailStateCo
 @override
 bool operator ==(Object other) {
   final _this = this as FrameDetailState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FrameDetailState&&(identical(other.frame, _this.frame) || other.frame == _this.frame)&&(identical(other.isSubmittingReport, _this.isSubmittingReport) || other.isSubmittingReport == _this.isSubmittingReport)&&(identical(other.error, _this.error) || other.error == _this.error)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FrameDetailState&&(identical(other.frame, _this.frame) || other.frame == _this.frame)&&(identical(other.countdownSec, _this.countdownSec) || other.countdownSec == _this.countdownSec)&&(identical(other.isSubmittingReport, _this.isSubmittingReport) || other.isSubmittingReport == _this.isSubmittingReport)&&(identical(other.error, _this.error) || other.error == _this.error)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
 }
 
 
 @override
 int get hashCode {
   final _this = this as FrameDetailState;
-  return Object.hash(runtimeType,_this.frame,_this.isSubmittingReport,_this.error,_this.effect);
+  return Object.hash(runtimeType,_this.frame,_this.countdownSec,_this.isSubmittingReport,_this.error,_this.effect);
 }
 
 @override
 String toString() {
   final _this = this as FrameDetailState;
-  return 'FrameDetailState(frame: ${_this.frame}, isSubmittingReport: ${_this.isSubmittingReport}, error: ${_this.error}, effect: ${_this.effect})';
+  return 'FrameDetailState(frame: ${_this.frame}, countdownSec: ${_this.countdownSec}, isSubmittingReport: ${_this.isSubmittingReport}, error: ${_this.error}, effect: ${_this.effect})';
 }
 
 
@@ -51,7 +53,7 @@ abstract mixin class $FrameDetailStateCopyWith<$Res>  {
   factory $FrameDetailStateCopyWith(FrameDetailState value, $Res Function(FrameDetailState) _then) = _$FrameDetailStateCopyWithImpl;
 @useResult
 $Res call({
- Frame frame, bool isSubmittingReport, AppException? error, FrameDetailEffect? effect
+ Frame frame, int countdownSec, bool isSubmittingReport, AppException? error, FrameDetailEffect? effect
 });
 
 
@@ -68,10 +70,11 @@ class _$FrameDetailStateCopyWithImpl<$Res>
 
 /// Create a copy of FrameDetailState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? frame = null,Object? isSubmittingReport = null,Object? error = freezed,Object? effect = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? frame = null,Object? countdownSec = null,Object? isSubmittingReport = null,Object? error = freezed,Object? effect = freezed,}) {
   return _then(FrameDetailState(
 frame: null == frame ? _self.frame : frame // ignore: cast_nullable_to_non_nullable
-as Frame,isSubmittingReport: null == isSubmittingReport ? _self.isSubmittingReport : isSubmittingReport // ignore: cast_nullable_to_non_nullable
+as Frame,countdownSec: null == countdownSec ? _self.countdownSec : countdownSec // ignore: cast_nullable_to_non_nullable
+as int,isSubmittingReport: null == isSubmittingReport ? _self.isSubmittingReport : isSubmittingReport // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as AppException?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
 as FrameDetailEffect?,
@@ -168,10 +171,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Frame frame,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Frame frame,  int countdownSec,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FrameDetailState() when $default != null:
-return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);case _:
+return $default(_that.frame,_that.countdownSec,_that.isSubmittingReport,_that.error,_that.effect);case _:
   return orElse();
 
 }
@@ -189,10 +192,10 @@ return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Frame frame,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Frame frame,  int countdownSec,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)  $default,) {final _that = this;
 switch (_that) {
 case _FrameDetailState():
-return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);case _:
+return $default(_that.frame,_that.countdownSec,_that.isSubmittingReport,_that.error,_that.effect);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +212,10 @@ return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Frame frame,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Frame frame,  int countdownSec,  bool isSubmittingReport,  AppException? error,  FrameDetailEffect? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _FrameDetailState() when $default != null:
-return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);case _:
+return $default(_that.frame,_that.countdownSec,_that.isSubmittingReport,_that.error,_that.effect);case _:
   return null;
 
 }
@@ -224,10 +227,13 @@ return $default(_that.frame,_that.isSubmittingReport,_that.error,_that.effect);c
 
 
 class _FrameDetailState implements FrameDetailState {
-  const _FrameDetailState({required this.frame, this.isSubmittingReport = false, this.error, this.effect});
+  const _FrameDetailState({required this.frame, required this.countdownSec, this.isSubmittingReport = false, this.error, this.effect});
   
 
 @override final  Frame frame;
+/// Countdown picked by the user; overrides the frame's default when
+/// capture starts.
+@override final  int countdownSec;
 @override@JsonKey() final  bool isSubmittingReport;
 @override final  AppException? error;
 @override final  FrameDetailEffect? effect;
@@ -242,18 +248,18 @@ _$FrameDetailStateCopyWith<_FrameDetailState> get copyWith => __$FrameDetailStat
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FrameDetailState&&(identical(other.frame, frame) || other.frame == frame)&&(identical(other.isSubmittingReport, isSubmittingReport) || other.isSubmittingReport == isSubmittingReport)&&(identical(other.error, error) || other.error == error)&&(identical(other.effect, effect) || other.effect == effect));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FrameDetailState&&(identical(other.frame, frame) || other.frame == frame)&&(identical(other.countdownSec, countdownSec) || other.countdownSec == countdownSec)&&(identical(other.isSubmittingReport, isSubmittingReport) || other.isSubmittingReport == isSubmittingReport)&&(identical(other.error, error) || other.error == error)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,frame,isSubmittingReport,error,effect);
+    return Object.hash(runtimeType,frame,countdownSec,isSubmittingReport,error,effect);
 }
 
 @override
 String toString() {
-    return 'FrameDetailState(frame: $frame, isSubmittingReport: $isSubmittingReport, error: $error, effect: $effect)';
+    return 'FrameDetailState(frame: $frame, countdownSec: $countdownSec, isSubmittingReport: $isSubmittingReport, error: $error, effect: $effect)';
 }
 
 
@@ -264,7 +270,7 @@ abstract mixin class _$FrameDetailStateCopyWith<$Res> implements $FrameDetailSta
   factory _$FrameDetailStateCopyWith(_FrameDetailState value, $Res Function(_FrameDetailState) _then) = __$FrameDetailStateCopyWithImpl;
 @override @useResult
 $Res call({
- Frame frame, bool isSubmittingReport, AppException? error, FrameDetailEffect? effect
+ Frame frame, int countdownSec, bool isSubmittingReport, AppException? error, FrameDetailEffect? effect
 });
 
 
@@ -281,10 +287,11 @@ class __$FrameDetailStateCopyWithImpl<$Res>
 
 /// Create a copy of FrameDetailState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? frame = null,Object? isSubmittingReport = null,Object? error = freezed,Object? effect = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? frame = null,Object? countdownSec = null,Object? isSubmittingReport = null,Object? error = freezed,Object? effect = freezed,}) {
   return _then(_FrameDetailState(
 frame: null == frame ? _self.frame : frame // ignore: cast_nullable_to_non_nullable
-as Frame,isSubmittingReport: null == isSubmittingReport ? _self.isSubmittingReport : isSubmittingReport // ignore: cast_nullable_to_non_nullable
+as Frame,countdownSec: null == countdownSec ? _self.countdownSec : countdownSec // ignore: cast_nullable_to_non_nullable
+as int,isSubmittingReport: null == isSubmittingReport ? _self.isSubmittingReport : isSubmittingReport // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as AppException?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
 as FrameDetailEffect?,

@@ -220,6 +220,18 @@ abstract class AppLocalizations {
   /// **'what\'s off about this one?'**
   String get frameDetailReportHint;
 
+  /// No description provided for @frameDetailTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'countdown timer'**
+  String get frameDetailTimer;
+
+  /// No description provided for @frameDetailTimerSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s'**
+  String frameDetailTimerSeconds(int seconds);
+
   /// No description provided for @frameDetailSlotCount.
   ///
   /// In en, this message translates to:

@@ -8,11 +8,26 @@ part 'frame_detail_view_model.g.dart';
 
 @riverpod
 class FrameDetailViewModel extends _$FrameDetailViewModel {
+  static const countdownOptions = [3, 5];
+
   @override
-  FrameDetailState build(Frame frame) => FrameDetailState(frame: frame);
+  FrameDetailState build(Frame frame) => FrameDetailState(
+    frame: frame,
+    countdownSec: countdownOptions.contains(frame.countdownSec)
+        ? frame.countdownSec
+        : countdownOptions.first,
+  );
+
+  void onCountdownSelected(int seconds) {
+    state = state.copyWith(countdownSec: seconds);
+  }
 
   void onUseThisFramePressed() {
-    state = state.copyWith(effect: UseFrameEffect(state.frame));
+    state = state.copyWith(
+      effect: UseFrameEffect(
+        state.frame.copyWith(countdownSec: state.countdownSec),
+      ),
+    );
   }
 
   Future<void> onReportSubmitted(String reason) async {

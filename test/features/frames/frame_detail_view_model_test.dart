@@ -31,7 +31,22 @@ void main() {
 
     final state = container.read(provider);
     expect(state.effect, isA<UseFrameEffect>());
-    expect((state.effect! as UseFrameEffect).frame, sampleFrame);
+    expect(
+      (state.effect! as UseFrameEffect).frame,
+      sampleFrame.copyWith(countdownSec: state.countdownSec),
+    );
+  });
+
+  test('the selected countdown is carried into the frame to capture', () {
+    final provider = frameDetailViewModelProvider(sampleFrame);
+    container.listen(provider, (_, _) {});
+    container.read(provider.notifier)
+      ..onCountdownSelected(5)
+      ..onUseThisFramePressed();
+
+    final state = container.read(provider);
+    expect(state.countdownSec, 5);
+    expect((state.effect! as UseFrameEffect).frame.countdownSec, 5);
   });
 
   test(

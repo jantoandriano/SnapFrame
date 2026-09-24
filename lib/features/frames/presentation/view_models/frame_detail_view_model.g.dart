@@ -59,7 +59,7 @@ final class FrameDetailViewModelProvider
 }
 
 String _$frameDetailViewModelHash() =>
-    r'20d099dc542db49f8f6a269634f384193dbc098e';
+    r'dbd1fa0958a9502dad7201c21db617f08cf79e1f';
 
 final class FrameDetailViewModelFamily extends $Family
     with

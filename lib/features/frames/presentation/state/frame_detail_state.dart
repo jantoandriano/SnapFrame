@@ -9,6 +9,10 @@ part 'frame_detail_state.freezed.dart';
 abstract class FrameDetailState with _$FrameDetailState {
   const factory FrameDetailState({
     required Frame frame,
+
+    /// Countdown picked by the user; overrides the frame's default when
+    /// capture starts.
+    required int countdownSec,
     @Default(false) bool isSubmittingReport,
     AppException? error,
     FrameDetailEffect? effect,

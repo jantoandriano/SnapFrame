@@ -91,6 +91,27 @@ class FrameDetailView extends ConsumerWidget {
                 'by ${state.frame.ownerId}',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
+              const SizedBox(height: SnapSpacing.lg),
+              Text(
+                l10n.frameDetailTimer,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: SnapSpacing.sm),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: PillTabBar(
+                  tabs: [
+                    for (final s in FrameDetailViewModel.countdownOptions)
+                      l10n.frameDetailTimerSeconds(s),
+                  ],
+                  selectedIndex: FrameDetailViewModel.countdownOptions.indexOf(
+                    state.countdownSec,
+                  ),
+                  onChanged: (i) => notifier.onCountdownSelected(
+                    FrameDetailViewModel.countdownOptions[i],
+                  ),
+                ),
+              ),
               const SizedBox(height: SnapSpacing.xl),
               ChunkyButton(
                 label: l10n.frameDetailUseThisFrame,

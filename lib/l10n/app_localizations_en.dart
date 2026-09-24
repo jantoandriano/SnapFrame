@@ -73,6 +73,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get frameDetailReportHint => 'what\'s off about this one?';
 
   @override
+  String get frameDetailTimer => 'countdown timer';
+
+  @override
+  String frameDetailTimerSeconds(int seconds) {
+    return '${seconds}s';
+  }
+
+  @override
   String frameDetailSlotCount(int count) {
     return '$count slots';
   }
