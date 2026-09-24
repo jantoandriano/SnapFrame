@@ -8,10 +8,15 @@ import 'package:snapframe/features/frames/domain/tier.dart';
 
 final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
+/// Dummy Pro account for trying Pro-only frames without a paywall.
+const fakeProEmail = 'pro@snapframe.app';
+const fakeProPassword = 'snapframe';
+
 /// Stands in for `firebase_auth` + `users/{uid}` until a real Firebase
 /// project is wired up (Milestone 3). Accepts any well-formed
 /// email/password, no real account check — this is a UI/flow stub, not an
-/// auth system.
+/// auth system. The one exception is [fakeProEmail], which checks its
+/// password and signs in as a Pro user.
 class FakeAuthRepository implements AuthRepository {
   AppUser? _current;
   final StreamController<AppUser?> _changes = StreamController.broadcast();
@@ -58,7 +63,7 @@ class FakeAuthRepository implements AuthRepository {
         uid: email.toLowerCase(),
         displayName: displayName,
         email: email,
-        tier: Tier.free,
+        tier: _isProAccount(email) ? Tier.pro : Tier.free,
         createdAt: DateTime.now(),
       ),
     );
@@ -77,8 +82,14 @@ class FakeAuthRepository implements AuthRepository {
     if (password.length < 6) {
       return const ValidationException('password needs 6+ characters');
     }
+    if (_isProAccount(email) && password != fakeProPassword) {
+      return const ValidationException('wrong password');
+    }
     return null;
   }
+
+  bool _isProAccount(String email) =>
+      email.trim().toLowerCase() == fakeProEmail;
 
   String _displayNameFromEmail(String email) {
     final local = email.split('@').first;
