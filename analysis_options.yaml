@@ -1,0 +1,35 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "lib/l10n/**"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+    - tool/**
+
+linter:
+  rules:
+    # This codebase intentionally avoids comments unless a non-obvious WHY
+    # needs explaining; doc comments on every public member add noise
+    # without adding information here.
+    public_member_api_docs: false
+    # New in Dart 3.13 (`new ClassName()` instead of `ClassName()`). Not
+    # adopting a syntax this fresh repo-wide — it reads unfamiliar to most
+    # Flutter devs/tools right now for zero functional benefit.
+    unnecessary_type_name_in_constructor: false
+    # Riverpod Notifier intent methods (onXPressed-style) read better as
+    # methods than as setters, even for one-liners that just reassign state.
+    use_setters_to_change_properties: false
+    # Same call as unnecessary_type_name_in_constructor above: new Dart
+    # 3.13 syntax (`class X;`), not worth adopting yet — and mocktail's
+    # own `class _MockFoo extends Mock implements Foo {}` idiom is what
+    # every test in this repo (and everyone else's mocktail code) uses.
+    empty_container_bodies: false
