@@ -7,6 +7,22 @@ Frame Detail → the Milestone 2 capture/review/result loop, all running end-to-
 in-memory backend, not Firebase. See "Milestone 3 is UI-only, on purpose" below for why and what that
 means concretely.
 
+## The capture flow
+
+1. **Frame Detail** — pick a **3s or 5s countdown** (defaults to the frame's own `countdownSec` if it's one
+   of those). The choice travels into capture as a copy of the frame with `countdownSec` overridden, so
+   retakes from Review reuse it too.
+2. **Capture** — each slot is shot in order on an automatic countdown. A full-screen white flash marks
+   every shot; the "📸" icon only appears on the **final** one. After each shot a **"got it!"** confirmation
+   (the photo popping in as a tilted polaroid, then shrinking away) holds for `capturedHoldDuration` (1s)
+   before the next countdown starts.
+3. **Review** — the composited frame plus a thumbnail per slot. Tap a thumbnail to **retake** just that
+   slot. While the frame recomposes the old preview dims under a loader, the new one pops in, the retaken
+   thumbnail gets a lime highlight, and a "pic N updated" snack confirms it.
+4. **Result** — save to gallery, or **send to WhatsApp**: enter a number with its country code (formatting
+   is stripped; a leading `0` is rejected as a missing country code). See "WhatsApp sharing" below for
+   what that does per platform.
+
 ## Tech stack
 
 Flutter **3.47.0** (stable) / Dart **3.13.0**.
@@ -32,6 +48,7 @@ Flutter **3.47.0** (stable) / Dart **3.13.0**.
 | Compositing (JPEG encode only, see below) | image | 4.10.1 |
 | Save / share | gal | 2.3.3 |
 | | share_plus | 13.3.0 |
+| WhatsApp share (Android `FileProvider`) | androidx.core:core (Gradle) | 1.13.1 |
 | Confetti (Result screen) | confetti | 0.8.0 |
 
 Packages further down the stack table in the spec (Firebase, purchases_flutter, permission_handler,
@@ -77,11 +94,27 @@ milestone that first needs them, same as before.
   the one CPU-heavy step that both doesn't touch `dart:ui` and is the reason "background isolate" was
   worth doing in the first place. `image` is a new dependency purely for `encodeJpg`; everything else is
   still Canvas/PictureRecorder as specified.
-- **The bundled sample frame is placeholder art I generated in-code**, not real design work — no such
-  asset existed. `tool/generate_sample_frame.dart` draws a 3-slot vertical strip (lime chrome, ink border,
-  transparent cutouts) straight to `assets/frames/sample_overlay.png` via Canvas, so swapping in real
-  artwork later is a file replacement, not a code change — `Frame.slots` and the PNG's cutouts share one
-  layout source (`sample_frame_layout.dart`) so they can't drift apart.
+- **The two bundled frames are placeholder art generated in-code**, not real design work — no such
+  assets existed. `tool/generate_sample_frame.dart` draws both straight to PNG via Canvas:
+  - `sample_overlay.png` — **classic strip** (free): 3 horizontal slots, lime chrome, ink border.
+  - `photo_dump_overlay.png` — **photo dump** (Pro): a pink 2×2 grid of polaroid cards with hard shadows,
+    tape strips and sparkles.
+
+  Swapping in real artwork later is a file replacement, not a code change — each frame's `Frame.slots`
+  and its PNG's cutouts share one layout source (`sample_frame_layout.dart`, `photo_dump_layout.dart`) so
+  they can't drift apart, and `fake_frames_data_test.dart` checks every slot center is a transparent
+  cutout of the right-sized PNG.
+- **WhatsApp sharing targets a number via an undocumented intent extra on Android.** `share_plus` can't
+  pick a target app or recipient, so `MainActivity.kt` exposes a `snapframe/whatsapp` MethodChannel that
+  writes the JPEG to the cache dir, serves it through its own `FileProvider` (`WhatsAppShareProvider`), and
+  launches WhatsApp (falling back to WhatsApp Business) with the chat preselected via the `jid` extra.
+  WhatsApp reads `jid` but doesn't document it — if a future version drops it, the image still attaches
+  and the user just picks the contact. iOS and web can't target a recipient at all, so they fall back to
+  the system share sheet with the image. The public `wa.me` link wasn't an option: it can prefill text
+  but can't attach an image.
+- **`WRITE_EXTERNAL_STORAGE` uses `tools:replace` in the manifest.** `camera_android_camerax` declares it
+  with `maxSdkVersion` 28 while the app needs 29 (for `gal`), and the manifest merger fails the Android
+  build on the mismatch. The app's value wins.
 - **`recordFrameUse` isn't called.** It's a Cloud Functions callable and there's no Firebase yet (that's
   Milestone 3) — wiring it against a backend that doesn't exist isn't meaningful yet.
 - **Permission UX is functional, not polished.** `camera`'s `CameraController.initialize()` and `gal`'s
@@ -106,15 +139,19 @@ real Firebase SDKs against nonexistent credentials would mean shipping a screen 
 Concretely:
 
 - **Auth**: email/password only (no Google/Apple yet). `FakeAuthRepository` accepts any well-formed
-  email + 6-character password, no real account check — it's a flow stub. Session state is a broadcast
-  stream in memory, `keepAlive: true` so it survives navigation; it does **not** survive an app restart.
-- **Frames**: `fake_frames_data.dart` seeds 7 frames (mixed official/community, free/pro), all reusing
-  `sampleFrame`'s single overlay — there's no second piece of art yet, just varied metadata so Browse has
-  something real to tab, filter, sort, and lock against. `reportFrame` is a stub that always succeeds.
+  email + 6-character password, no real account check — it's a flow stub — and signs them in as **free**.
+  The one exception is the dummy Pro account below. Session state is a broadcast stream in memory,
+  `keepAlive: true` so it survives navigation; it does **not** survive an app restart.
+- **Frames**: `fake_frames_data.dart` is exactly two official frames — `sampleFrame` (classic strip, free)
+  and `photoDumpFrame` (photo dump, Pro), each with its own overlay art. The Community tab is empty until
+  real user frames exist. `reportFrame` is a stub that always succeeds.
 - **Tier gating is real** — `FrameCard.isLocked` and the pro-frame tap check both compare against the
-  signed-in fake user's `Tier`, exactly as they will against a real one. There's just no way to *become*
-  pro yet (that's the Milestone 4 Paywall); tapping a locked frame shows a snack with the paywall copy
-  instead of opening a paywall screen that doesn't exist.
+  signed-in fake user's `Tier`, exactly as they will against a real one. For a free user, tapping a locked
+  frame shows a snack with the paywall copy instead of opening a paywall screen that doesn't exist yet
+  (that's Milestone 4).
+- **Dummy Pro account**: sign in as `pro@snapframe.app` / `snapframe` to get a Pro user and try Pro frames
+  without a paywall. That email checks its password (anything else is "wrong password"); the credentials
+  are hardcoded in `FakeAuthRepository` and go away with it when real Firebase auth lands.
 - **Swapping in real Firebase later is a DI change, not a rewrite.** `AuthRepository` and `FrameRepository`
   are the same interfaces a `FirebaseAuthRepository`/`FirestoreFrameRepository` would implement; every
   ViewModel and View here only depends on the interface. When there's a real project, the fix is new
@@ -130,6 +167,13 @@ Concretely:
   RevenueCat/sign_in_with_apple all expect 13+ anyway and going lower risks other plugins' compatibility).
 - **This was built on Windows, with no Xcode available.** iOS code/config is written to be correct, but
   hasn't been built or run — that needs verification on a Mac or CI.
+- **Windows + project and pub cache on different drives:** `flutter build apk` can fail inside a plugin
+  with *"Could not close incremental caches"* — a known Kotlin incremental-compilation bug when the
+  project (e.g. `D:`) and the pub cache (`C:`) live on different drive roots. Build with
+  `-Pkotlin.incremental=false` (e.g. `cd android && ./gradlew assembleDebug "-Pkotlin.incremental=false"`)
+  or add `kotlin.incremental=false` to `android/gradle.properties`.
+- **Web is a dev convenience, not a target.** Capture → Review works in a browser (captured `XFile`s are
+  blob URLs there, which `XFileImage` handles), but **Save** won't: `gal` is Android/iOS only.
 - **The capture screen itself hasn't been visually verified on a real device either** — no Android
   emulator or physical device was available in this environment, and `camera` doesn't work on the
   Windows-desktop/web targets used to check design-system widgets in isolation (no `camera_windows`, and
@@ -162,7 +206,9 @@ lib/
     result/                      — Result screen (save/share), compositor + save/share repositories
   l10n/                          — ARB source + generated AppLocalizations
 tool/
-  generate_sample_frame.dart     — one-off: rewrites assets/frames/sample_overlay.png
+  generate_sample_frame.dart     — one-off: rewrites both frame overlay PNGs in assets/frames/
+                                    (`flutter test tool/generate_sample_frame.dart`; add
+                                    `--plain-name "photo dump"` to regenerate just that one)
 ```
 
 Each feature follows `data/` (services, DTOs, repo impls) / `domain/` (entities, repo interfaces) /
@@ -190,10 +236,15 @@ radius, shadow offset, or spacing value — everything reads from these.
 
 Core widgets, each with a widget test and light/dark goldens in `test/core/widgets/`: `ChunkyButton`,
 `StickerBadge`, `FrameCard`, `PillTabBar` + `PillChip`, `BrutalTextField`, `CountdownOverlay`, `SlotStrip`,
-`EmptyState` + `ErrorState`, `showSnapSnack`/`SnapSnackContent`, `LoadingBlob`.
+`EmptyState` + `ErrorState`, `showSnapSnack`/`SnapSnackContent`, `LoadingBlob`. Also in `core/widgets/`,
+with widget tests but no goldens (they're animation-driven): `CapturedOverlay` (the per-shot "got it!"
+confirmation) — plus `XFileImage`, which shows a captured `XFile` on every platform (`Image.network` for
+web blob URLs, `Image.file` elsewhere, with an optional `cacheWidth` for thumbnails). `SlotStrip` takes an
+optional `highlightIndex` for a one-off "just updated" pop, alongside the pulsing `currentIndex`.
 
 The app boots to Splash → Login; sign in with any well-formed email + 6-character password
-(`FakeAuthRepository` accepts it) to reach Browse and the rest of the flow. There's no standalone
+(`FakeAuthRepository` accepts it, as a free user) to reach Browse and the rest of the flow — or use the
+dummy Pro account (`pro@snapframe.app` / `snapframe`) to open the Pro frame too. There's no standalone
 component-review screen — each core widget's look in light/dark is covered by its golden test instead
 (`test/core/widgets/`), which is also the fastest way to check one in isolation while working on it.
 
@@ -247,8 +298,9 @@ Two things worth knowing if you add more:
 ## Milestones
 
 1. ✅ Project setup, lints, env, theme tokens, core widgets (each with a widget test + golden).
-2. ✅ Offline core loop: bundled sample frame → capture with countdown → retake → composite → save/share
-   (camera preview itself still needs a real-device check, see Platform targets above).
+2. ✅ Offline core loop: bundled frames → capture with a 3s/5s countdown and per-shot confirmation →
+   retake with visible feedback → composite → save / send to WhatsApp (camera preview and the WhatsApp
+   hand-off still need a real-device check, see Platform targets above).
 3. 🟡 Splash + Login + Browse/Home + Frame Detail, with tier locking — **UI/flow only**, against a fake
    in-memory backend (see "Milestone 3 is UI-only, on purpose" above). Firebase, real auth, and Firestore
    are still open.
