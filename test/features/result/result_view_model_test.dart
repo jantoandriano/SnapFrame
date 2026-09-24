@@ -31,7 +31,7 @@ void main() {
   });
 
   test('onSavePressed shows a success snack and clears isSaving', () async {
-    when(() => repo.saveToGallery(any()))
+    when(() => repo.saveImage(any()))
         .thenAnswer((_) async => const Result.success(null));
 
     final provider = resultViewModelProvider(sampleFrame, jpeg);
@@ -46,7 +46,7 @@ void main() {
   });
 
   test('onSavePressed shows an error snack on failure', () async {
-    when(() => repo.saveToGallery(any())).thenAnswer(
+    when(() => repo.saveImage(any())).thenAnswer(
       (_) async => const Result.failure(PermissionDeniedException('nope')),
     );
 

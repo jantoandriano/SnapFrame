@@ -4,13 +4,26 @@ import 'package:gal/gal.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:snapframe/core/result/app_exception.dart';
 import 'package:snapframe/core/result/result.dart';
+import 'package:snapframe/features/result/data/browser_download.dart';
+import 'package:snapframe/features/result/data/png_encoder.dart';
 import 'package:snapframe/features/result/domain/save_share_repository.dart';
 
 class SaveShareRepositoryImpl implements SaveShareRepository {
   @override
-  Future<Result<void>> saveToGallery(Uint8List jpegBytes) async {
+  Future<Result<void>> saveImage(Uint8List jpegBytes) async {
     try {
-      await Gal.putImageBytes(jpegBytes, name: 'snapframe');
+      final png = await jpegToPng(jpegBytes);
+      if (kIsWeb) {
+        final stamp = DateTime.now().millisecondsSinceEpoch;
+        downloadBytes(
+          png,
+          fileName: 'snapframe-$stamp.png',
+          mimeType: 'image/png',
+        );
+      } else {
+        // gal picks the extension from the bytes and de-dupes the name.
+        await Gal.putImageBytes(png, name: 'snapframe');
+      }
       return const Result.success(null);
     } on GalException catch (e) {
       return Result.failure(_mapGalException(e));

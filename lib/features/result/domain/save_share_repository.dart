@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'package:snapframe/core/result/result.dart';
 
 abstract interface class SaveShareRepository {
-  Future<Result<void>> saveToGallery(Uint8List jpegBytes);
+  /// Saves the composited image as a PNG: to the photo gallery on mobile,
+  /// or as a browser download on web.
+  Future<Result<void>> saveImage(Uint8List jpegBytes);
 
   /// Sends the image to [phone] (digits-only international format) on
   /// WhatsApp. Android opens the chat directly; other platforms can't

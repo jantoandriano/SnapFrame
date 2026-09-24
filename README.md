@@ -19,7 +19,7 @@ means concretely.
 3. **Review** — the composited frame plus a thumbnail per slot. Tap a thumbnail to **retake** just that
    slot. While the frame recomposes the old preview dims under a loader, the new one pops in, the retaken
    thumbnail gets a lime highlight, and a "pic N updated" snack confirms it.
-4. **Result** — save to gallery, or **send to WhatsApp**: enter a number with its country code (formatting
+4. **Result** — save as PNG (to the gallery on a phone, as a download in a browser), or **send to WhatsApp**: enter a number with its country code (formatting
    is stripped; a leading `0` is rejected as a missing country code). See "WhatsApp sharing" below for
    what that does per platform.
 
@@ -47,6 +47,7 @@ Flutter **3.47.0** (stable) / Dart **3.13.0**.
 | Camera | camera | 0.12.1 |
 | Compositing (JPEG encode only, see below) | image | 4.10.1 |
 | Save / share | gal | 2.3.3 |
+| Web download | web | 1.1.1 |
 | | share_plus | 13.3.0 |
 | WhatsApp share (Android `FileProvider`) | androidx.core:core (Gradle) | 1.13.1 |
 | Confetti (Result screen) | confetti | 0.8.0 |
@@ -173,7 +174,8 @@ Concretely:
   `-Pkotlin.incremental=false` (e.g. `cd android && ./gradlew assembleDebug "-Pkotlin.incremental=false"`)
   or add `kotlin.incremental=false` to `android/gradle.properties`.
 - **Web is a dev convenience, not a target.** Capture → Review works in a browser (captured `XFile`s are
-  blob URLs there, which `XFileImage` handles), but **Save** won't: `gal` is Android/iOS only.
+  blob URLs there, which `XFileImage` handles), and **Save** downloads the PNG through the browser
+  (`gal` is Android/iOS only, so web gets its own `<a download>` path).
 - **The capture screen itself hasn't been visually verified on a real device either** — no Android
   emulator or physical device was available in this environment, and `camera` doesn't work on the
   Windows-desktop/web targets used to check design-system widgets in isolation (no `camera_windows`, and

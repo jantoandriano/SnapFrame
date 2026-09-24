@@ -19,7 +19,7 @@ class ResultViewModel extends _$ResultViewModel {
   Future<void> onSavePressed() async {
     state = state.copyWith(isSaving: true);
     final repo = ref.read(saveShareRepositoryProvider);
-    final result = await repo.saveToGallery(state.jpegBytes);
+    final result = await repo.saveImage(state.jpegBytes);
     state = state.copyWith(isSaving: false);
     result.when(
       success: (_) {
