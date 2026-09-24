@@ -41,7 +41,7 @@ final class BrowseViewModelProvider
   }
 }
 
-String _$browseViewModelHash() => r'62fa56fbdc752cfca51fc63a038b6e64782a4c48';
+String _$browseViewModelHash() => r'721e51d3390a2a222fede9a847d931428aeb01c8';
 
 abstract class _$BrowseViewModel extends $Notifier<BrowseState> {
   BrowseState build();
