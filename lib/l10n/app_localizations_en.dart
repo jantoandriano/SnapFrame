@@ -125,6 +125,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get captureGotIt => 'got it! ✦';
 
   @override
+  String reviewSlotUpdated(int n) {
+    return 'pic $n updated ✦';
+  }
+
+  @override
   String captureSlotLabel(int current, int total) {
     return 'pic $current of $total';
   }

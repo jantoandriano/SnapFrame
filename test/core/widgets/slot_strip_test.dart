@@ -24,6 +24,21 @@ void main() {
     expect(boxes, findsNWidgets(4));
   });
 
+  testWidgets('marks the highlighted slot as updated, and the pop settles', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      wrapForTest(
+        const SlotStrip(slotCount: 3, currentIndex: -1, highlightIndex: 1),
+      ),
+    );
+    // One-off pop (unlike the current-slot pulse), so it settles.
+    await tester.pumpAndSettle();
+
+    expect(find.bySemanticsLabel('updated shot'), findsOneWidget);
+    expect(find.bySemanticsLabel('captured shot'), findsNWidgets(2));
+  });
+
   testWidgets('golden - light', (tester) async {
     await tester.pumpWidget(
       wrapForTest(const SlotStrip(slotCount: 4, currentIndex: 1)),

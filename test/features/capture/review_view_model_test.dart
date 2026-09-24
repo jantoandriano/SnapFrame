@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:snapframe/core/result/app_exception.dart';
 import 'package:snapframe/core/result/result.dart';
 import 'package:snapframe/features/capture/presentation/state/review_effect.dart';
 import 'package:snapframe/features/capture/presentation/view_models/review_view_model.dart';
@@ -98,6 +99,38 @@ void main() {
     expect(state.captures[1], retaken);
     expect(state.previewJpeg, secondJpeg);
     expect(composeCount, 2);
+    expect(state.updatedSlotIndex, 1);
+    expect(state.effect, isA<SlotUpdatedEffect>());
+    expect((state.effect! as SlotUpdatedEffect).slotIndex, 1);
+  });
+
+  test('a failed recompose after retake flags no slot as updated', () async {
+    var composeCount = 0;
+    when(
+      () => repo.compose(
+        frame: any(named: 'frame'),
+        photos: any(named: 'photos'),
+      ),
+    ).thenAnswer((_) async {
+      composeCount++;
+      return composeCount == 1
+          ? Result.success(Uint8List(0))
+          : const Result.failure(UnknownException('boom'));
+    });
+
+    final provider = reviewViewModelProvider(sampleFrame, captures);
+    container.listen(provider, (_, _) {});
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    await container
+        .read(provider.notifier)
+        .onRetakeCompleted(0, XFile.fromData(Uint8List(0)));
+
+    final state = container.read(provider);
+    expect(state.isComposing, isFalse);
+    expect(state.error, isA<UnknownException>());
+    expect(state.updatedSlotIndex, isNull);
+    expect(state.effect, isNull);
   });
 
   test('onContinuePressed hands the composited JPEG off via effect', () async {

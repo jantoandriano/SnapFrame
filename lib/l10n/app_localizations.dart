@@ -310,6 +310,12 @@ abstract class AppLocalizations {
   /// **'got it! ✦'**
   String get captureGotIt;
 
+  /// No description provided for @reviewSlotUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'pic {n} updated ✦'**
+  String reviewSlotUpdated(int n);
+
   /// No description provided for @captureSlotLabel.
   ///
   /// In en, this message translates to:

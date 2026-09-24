@@ -11,6 +11,12 @@ class RequestRetakeEffect extends ReviewEffect {
   final int slotIndex;
 }
 
+/// A retake landed and the preview has been recomposed with it.
+class SlotUpdatedEffect extends ReviewEffect {
+  const SlotUpdatedEffect(this.slotIndex);
+  final int slotIndex;
+}
+
 /// Happy with the preview — hand the composited JPEG to the Result screen.
 class ProceedToResultEffect extends ReviewEffect {
   const ProceedToResultEffect(this.jpegBytes);

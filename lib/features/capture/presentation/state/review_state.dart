@@ -15,6 +15,10 @@ abstract class ReviewState with _$ReviewState {
     required List<XFile> captures,
     Uint8List? previewJpeg,
     @Default(false) bool isComposing,
+
+    /// The slot most recently replaced by a retake, highlighted in the
+    /// strip so it's clear which shot changed.
+    int? updatedSlotIndex,
     AppException? error,
     ReviewEffect? effect,
   }) = _ReviewState;

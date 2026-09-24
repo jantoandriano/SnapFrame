@@ -47,6 +47,12 @@
   "resultAgain": "again!",
   "reviewContinue": "all good, let's go ✦",
   "captureGotIt": "got it! ✦",
+  "reviewSlotUpdated": "pic {n} updated ✦",
+  "@reviewSlotUpdated": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "captureSlotLabel": "pic {current} of {total}",
   "@captureSlotLabel": {
     "placeholders": {

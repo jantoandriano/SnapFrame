@@ -10,12 +10,17 @@ class SlotStrip extends StatelessWidget {
     required this.slotCount,
     required this.currentIndex,
     this.thumbnails = const [],
+    this.highlightIndex,
     super.key,
   });
 
   final int slotCount;
   final int currentIndex;
   final List<Widget?> thumbnails;
+
+  /// A slot that just changed (e.g. a retake): lime border plus a one-off
+  /// pop, rather than the endless pulse of [currentIndex].
+  final int? highlightIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +31,7 @@ class SlotStrip extends StatelessWidget {
           if (i > 0) const SizedBox(width: SnapSpacing.sm),
           _Slot(
             isCurrent: i == currentIndex,
+            isHighlighted: i == highlightIndex,
             thumbnail: i < thumbnails.length ? thumbnails[i] : null,
           ),
         ],
@@ -35,16 +41,21 @@ class SlotStrip extends StatelessWidget {
 }
 
 class _Slot extends StatelessWidget {
-  const _Slot({required this.isCurrent, required this.thumbnail});
+  const _Slot({
+    required this.isCurrent,
+    required this.isHighlighted,
+    required this.thumbnail,
+  });
 
   final bool isCurrent;
+  final bool isHighlighted;
   final Widget? thumbnail;
 
   @override
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final reduceMotion = MediaQuery.of(context).disableAnimations;
-    final borderColor = isCurrent ? tokens.lime : tokens.ink;
+    final borderColor = isCurrent || isHighlighted ? tokens.lime : tokens.ink;
 
     Widget box = Container(
       width: 48,
@@ -66,10 +77,28 @@ class _Slot extends StatelessWidget {
             duration: const Duration(milliseconds: 700),
             curve: Curves.easeInOut,
           );
+    } else if (isHighlighted && !reduceMotion) {
+      box = box
+          .animate()
+          .scaleXY(
+            end: 1.25,
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+          )
+          .then()
+          .scaleXY(
+            end: 0.8,
+            duration: const Duration(milliseconds: 320),
+            curve: Curves.elasticOut,
+          );
     }
 
     return Semantics(
-      label: isCurrent ? 'current shot' : 'captured shot',
+      label: isCurrent
+          ? 'current shot'
+          : isHighlighted
+          ? 'updated shot'
+          : 'captured shot',
       child: box,
     );
   }

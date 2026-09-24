@@ -58,7 +58,7 @@ final class ReviewViewModelProvider
   }
 }
 
-String _$reviewViewModelHash() => r'31fe887847e6609760e1e92123c93c82280aa4d5';
+String _$reviewViewModelHash() => r'ce59edaddf1a2990e52d06d9313a67f2f64a6619';
 
 final class ReviewViewModelFamily extends $Family
     with
