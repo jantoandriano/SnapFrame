@@ -20,6 +20,16 @@ void main() {
     expect(find.text('📸'), findsNWidgets(2));
   });
 
+  testWidgets('hides the capture emoji when showCaptureIcon is false', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      wrapForTest(const CountdownOverlay(tick: 0, showCaptureIcon: false)),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('📸'), findsNothing);
+  });
+
   testWidgets('golden - counting down, light', (tester) async {
     await tester.pumpWidget(
       wrapForTest(

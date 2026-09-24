@@ -116,7 +116,15 @@ class _CaptureViewState extends ConsumerState<CaptureView>
                   ),
                 ),
               ),
-              Center(child: _PhaseOverlay(phase: state.phase)),
+              Center(
+                child: _PhaseOverlay(
+                  phase: state.phase,
+                  // A retake is a single shot, so it's always the last one.
+                  isFinalShot:
+                      widget.retakeSlotIndex != null ||
+                      state.currentSlotIndex == state.frame.slots.length - 1,
+                ),
+              ),
               Positioned(
                 bottom: 24,
                 right: 24,
@@ -139,15 +147,19 @@ class _CaptureViewState extends ConsumerState<CaptureView>
 }
 
 class _PhaseOverlay extends StatelessWidget {
-  const _PhaseOverlay({required this.phase});
+  const _PhaseOverlay({required this.phase, required this.isFinalShot});
 
   final CapturePhase phase;
+  final bool isFinalShot;
 
   @override
   Widget build(BuildContext context) {
     return switch (phase) {
       CaptureCountingDown(:final n) => CountdownOverlay(tick: n),
-      CaptureCapturing() => const CountdownOverlay(tick: 0),
+      CaptureCapturing() => CountdownOverlay(
+        tick: 0,
+        showCaptureIcon: isFinalShot,
+      ),
       CaptureIdle() || CaptureDone() => const SizedBox.shrink(),
     };
   }

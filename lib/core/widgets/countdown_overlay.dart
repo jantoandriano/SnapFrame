@@ -8,10 +8,18 @@ import 'package:snapframe/core/theme/typography.dart';
 /// count down, `0` shows the capture flash. The caller (a ViewModel) owns
 /// the timer; this widget only reacts to value changes.
 class CountdownOverlay extends StatelessWidget {
-  const CountdownOverlay({required this.tick, super.key});
+  const CountdownOverlay({
+    required this.tick,
+    this.showCaptureIcon = true,
+    super.key,
+  });
 
   /// Seconds remaining; `0` renders the capture ("📸" + flash) moment.
   final int tick;
+
+  /// Whether the capture moment shows "📸" or only the flash — mid-sequence
+  /// shots skip the icon so it only marks the final one.
+  final bool showCaptureIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +35,22 @@ class CountdownOverlay extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: reduceMotion ? 0 : 220),
-          switchInCurve: reduceMotion ? Curves.linear : Curves.elasticOut,
-          switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) => reduceMotion
-              ? FadeTransition(opacity: animation, child: child)
-              : ScaleTransition(scale: animation, child: child),
-          child: _StrokedNumber(
-            key: ValueKey(tick),
-            text: text,
-            fontSize: fontSize,
-            fill: color,
-            stroke: tokens.ink,
+        if (!isCapture || showCaptureIcon)
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: reduceMotion ? 0 : 220),
+            switchInCurve: reduceMotion ? Curves.linear : Curves.elasticOut,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) => reduceMotion
+                ? FadeTransition(opacity: animation, child: child)
+                : ScaleTransition(scale: animation, child: child),
+            child: _StrokedNumber(
+              key: ValueKey(tick),
+              text: text,
+              fontSize: fontSize,
+              fill: color,
+              stroke: tokens.ink,
+            ),
           ),
-        ),
         if (isCapture) _CaptureFlash(reduceMotion: reduceMotion),
       ],
     );
