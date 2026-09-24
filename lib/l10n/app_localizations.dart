@@ -268,6 +268,18 @@ abstract class AppLocalizations {
   /// **'save'**
   String get resultSave;
 
+  /// No description provided for @resultSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'saving…'**
+  String get resultSaving;
+
+  /// No description provided for @resultSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'saved!'**
+  String get resultSaved;
+
   /// No description provided for @resultShare.
   ///
   /// In en, this message translates to:

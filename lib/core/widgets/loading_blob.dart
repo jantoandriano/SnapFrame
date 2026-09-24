@@ -35,7 +35,23 @@ class LoadingBlob extends StatelessWidget {
         ),
       );
 
-      if (reduceMotion) return box;
+      final delay = Duration(milliseconds: index * 150);
+
+      // Reduced motion (on web this follows the OS/browser setting, e.g.
+      // Windows' "Animation effects" off) swaps the bounce for an in-place
+      // pulse: no movement, but still visibly "working" — a frozen
+      // indicator reads as a hung app.
+      if (reduceMotion) {
+        return box
+            .animate(onPlay: (controller) => controller.repeat(reverse: true))
+            .fade(
+              delay: delay,
+              begin: 1,
+              end: 0.25,
+              duration: const Duration(milliseconds: 450),
+              curve: Curves.easeInOut,
+            );
+      }
 
       // The stagger uses the effect's own `delay` (part of this one
       // AnimationController's timeline) rather than `.animate(delay:)`
@@ -44,7 +60,7 @@ class LoadingBlob extends StatelessWidget {
       return box
           .animate(onPlay: (controller) => controller.repeat(reverse: true))
           .slideY(
-            delay: Duration(milliseconds: index * 150),
+            delay: delay,
             end: -0.7,
             duration: const Duration(milliseconds: 350),
             curve: Curves.easeInOut,

@@ -40,6 +40,8 @@
   "retakeHint": "tap a pic to redo it, no judgment",
   "resultTitle": "ate. 💅",
   "resultSave": "save",
+  "resultSaving": "saving…",
+  "resultSaved": "saved!",
   "resultShare": "send to WhatsApp",
   "resultWhatsAppNumber": "WhatsApp number",
   "resultWhatsAppNumberHint": "with country code, e.g. 6281234567890",

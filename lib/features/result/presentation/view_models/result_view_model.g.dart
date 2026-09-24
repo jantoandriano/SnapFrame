@@ -58,7 +58,7 @@ final class ResultViewModelProvider
   }
 }
 
-String _$resultViewModelHash() => r'f6090625f086100b1d9340da5236c8b559e83d9c';
+String _$resultViewModelHash() => r'c0dd106e231c62d5639b2acafaa0e325f5f2bae9';
 
 final class ResultViewModelFamily extends $Family
     with

@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:snapframe/features/frames/domain/frame.dart';
@@ -11,19 +14,35 @@ part 'result_view_model.g.dart';
 
 @riverpod
 class ResultViewModel extends _$ResultViewModel {
+  static const savedBadgeDuration = Duration(seconds: 2);
+
+  Timer? _savedTimer;
+
   @override
   ResultState build(Frame frame, Uint8List jpegBytes) {
+    ref.onDispose(() => _savedTimer?.cancel());
     return ResultState(frame: frame, jpegBytes: jpegBytes);
   }
 
   Future<void> onSavePressed() async {
-    state = state.copyWith(isSaving: true);
+    if (state.isSaving) return;
+    _savedTimer?.cancel();
+    state = state.copyWith(isSaving: true, justSaved: false);
     final repo = ref.read(saveShareRepositoryProvider);
     final result = await repo.saveImage(state.jpegBytes);
     state = state.copyWith(isSaving: false);
     result.when(
       success: (_) {
-        state = state.copyWith(effect: const ShowResultSnackEffect('saved ✦'));
+        state = state.copyWith(
+          justSaved: true,
+          effect: const ShowResultSnackEffect(
+            kIsWeb ? 'saved to your downloads ✦' : 'saved to your gallery ✦',
+          ),
+        );
+        _savedTimer = Timer(
+          savedBadgeDuration,
+          () => state = state.copyWith(justSaved: false),
+        );
       },
       failure: (e) {
         state = state.copyWith(

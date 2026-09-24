@@ -117,11 +117,15 @@ class _ResultViewState extends ConsumerState<ResultView> {
                     alignment: WrapAlignment.center,
                     children: [
                       ChunkyButton(
-                        label: l10n.resultSave,
+                        label: state.isSaving
+                            ? l10n.resultSaving
+                            : state.justSaved
+                            ? l10n.resultSaved
+                            : l10n.resultSave,
+                        icon: state.justSaved ? Icons.check_rounded : null,
+                        isLoading: state.isSaving,
                         variant: SnapButtonVariant.secondary,
-                        onPressed: state.isSaving
-                            ? null
-                            : notifier.onSavePressed,
+                        onPressed: notifier.onSavePressed,
                       ),
                       ChunkyButton(
                         label: l10n.resultShare,

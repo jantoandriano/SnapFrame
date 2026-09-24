@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/utils/haptics.dart';
+import 'package:snapframe/core/widgets/loading_blob.dart';
 
 enum SnapButtonVariant { primary, secondary, ghost }
 
@@ -9,12 +10,17 @@ enum SnapButtonVariant { primary, secondary, ghost }
 /// offset shadow collapses to zero while the button translates by the
 /// same offset, so it reads as a physical object rather than a flat tap
 /// target.
+///
+/// [isLoading] swaps the leading icon for bouncing dots and ignores taps,
+/// while keeping the full-strength fill so it reads as "busy", not
+/// "disabled".
 class ChunkyButton extends StatefulWidget {
   const ChunkyButton({
     required this.label,
     required this.onPressed,
     this.variant = SnapButtonVariant.primary,
     this.icon,
+    this.isLoading = false,
     super.key,
   });
 
@@ -22,6 +28,7 @@ class ChunkyButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final SnapButtonVariant variant;
   final IconData? icon;
+  final bool isLoading;
 
   @override
   State<ChunkyButton> createState() => _ChunkyButtonState();
@@ -52,8 +59,11 @@ class _ChunkyButtonState extends State<ChunkyButton> {
   @override
   Widget build(BuildContext context) {
     final tokens = context.tokens;
-    final enabled = widget.onPressed != null;
-    final fill = _fillColor(tokens, enabled: enabled);
+    final enabled = widget.onPressed != null && !widget.isLoading;
+    final fill = _fillColor(
+      tokens,
+      enabled: widget.onPressed != null || widget.isLoading,
+    );
 
     return Semantics(
       button: true,
@@ -91,7 +101,10 @@ class _ChunkyButtonState extends State<ChunkyButton> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (widget.icon != null) ...[
+                if (widget.isLoading) ...[
+                  const LoadingBlob(size: 28),
+                  const SizedBox(width: SnapSpacing.sm),
+                ] else if (widget.icon != null) ...[
                   Icon(widget.icon, size: 20, color: tokens.ink),
                   const SizedBox(width: SnapSpacing.sm),
                 ],

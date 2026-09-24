@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,6 +44,36 @@ void main() {
     expect(state.isSaving, isFalse);
     expect(state.effect, isA<ShowResultSnackEffect>());
     expect((state.effect! as ShowResultSnackEffect).isError, isFalse);
+  });
+
+  test('onSavePressed flags justSaved after a successful save', () async {
+    when(() => repo.saveImage(any()))
+        .thenAnswer((_) async => const Result.success(null));
+
+    final provider = resultViewModelProvider(sampleFrame, jpeg);
+    container.listen(provider, (_, _) {});
+
+    expect(container.read(provider).justSaved, isFalse);
+    await container.read(provider.notifier).onSavePressed();
+    expect(container.read(provider).justSaved, isTrue);
+  });
+
+  test('onSavePressed ignores taps while a save is in flight', () async {
+    final pending = Completer<Result<void>>();
+    when(() => repo.saveImage(any())).thenAnswer((_) => pending.future);
+
+    final provider = resultViewModelProvider(sampleFrame, jpeg);
+    container.listen(provider, (_, _) {});
+    final notifier = container.read(provider.notifier);
+
+    final first = notifier.onSavePressed();
+    expect(container.read(provider).isSaving, isTrue);
+    await notifier.onSavePressed();
+    pending.complete(const Result.success(null));
+    await first;
+
+    verify(() => repo.saveImage(any())).called(1);
+    expect(container.read(provider).isSaving, isFalse);
   });
 
   test('onSavePressed shows an error snack on failure', () async {

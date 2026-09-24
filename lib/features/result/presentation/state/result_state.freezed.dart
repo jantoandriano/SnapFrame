@@ -15,7 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ResultState {
 
- Frame get frame; Uint8List get jpegBytes; bool get isSaving; bool get isSharing; String get whatsAppNumber;/// Set when a send was attempted with a number that isn't a full
+ Frame get frame; Uint8List get jpegBytes; bool get isSaving;/// True for `ResultViewModel.savedBadgeDuration` after a successful
+/// save, so the save button can confirm it in place.
+ bool get justSaved; bool get isSharing; String get whatsAppNumber;/// Set when a send was attempted with a number that isn't a full
 /// international one; cleared as soon as the user edits it.
  bool get whatsAppNumberInvalid; ResultEffect? get effect;
 /// Create a copy of ResultState
@@ -29,20 +31,20 @@ $ResultStateCopyWith<ResultState> get copyWith => _$ResultStateCopyWithImpl<Resu
 @override
 bool operator ==(Object other) {
   final _this = this as ResultState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResultState&&(identical(other.frame, _this.frame) || other.frame == _this.frame)&&const DeepCollectionEquality().equals(other.jpegBytes, _this.jpegBytes)&&(identical(other.isSaving, _this.isSaving) || other.isSaving == _this.isSaving)&&(identical(other.isSharing, _this.isSharing) || other.isSharing == _this.isSharing)&&(identical(other.whatsAppNumber, _this.whatsAppNumber) || other.whatsAppNumber == _this.whatsAppNumber)&&(identical(other.whatsAppNumberInvalid, _this.whatsAppNumberInvalid) || other.whatsAppNumberInvalid == _this.whatsAppNumberInvalid)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResultState&&(identical(other.frame, _this.frame) || other.frame == _this.frame)&&const DeepCollectionEquality().equals(other.jpegBytes, _this.jpegBytes)&&(identical(other.isSaving, _this.isSaving) || other.isSaving == _this.isSaving)&&(identical(other.justSaved, _this.justSaved) || other.justSaved == _this.justSaved)&&(identical(other.isSharing, _this.isSharing) || other.isSharing == _this.isSharing)&&(identical(other.whatsAppNumber, _this.whatsAppNumber) || other.whatsAppNumber == _this.whatsAppNumber)&&(identical(other.whatsAppNumberInvalid, _this.whatsAppNumberInvalid) || other.whatsAppNumberInvalid == _this.whatsAppNumberInvalid)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ResultState;
-  return Object.hash(runtimeType,_this.frame,const DeepCollectionEquality().hash(_this.jpegBytes),_this.isSaving,_this.isSharing,_this.whatsAppNumber,_this.whatsAppNumberInvalid,_this.effect);
+  return Object.hash(runtimeType,_this.frame,const DeepCollectionEquality().hash(_this.jpegBytes),_this.isSaving,_this.justSaved,_this.isSharing,_this.whatsAppNumber,_this.whatsAppNumberInvalid,_this.effect);
 }
 
 @override
 String toString() {
   final _this = this as ResultState;
-  return 'ResultState(frame: ${_this.frame}, jpegBytes: ${_this.jpegBytes}, isSaving: ${_this.isSaving}, isSharing: ${_this.isSharing}, whatsAppNumber: ${_this.whatsAppNumber}, whatsAppNumberInvalid: ${_this.whatsAppNumberInvalid}, effect: ${_this.effect})';
+  return 'ResultState(frame: ${_this.frame}, jpegBytes: ${_this.jpegBytes}, isSaving: ${_this.isSaving}, justSaved: ${_this.justSaved}, isSharing: ${_this.isSharing}, whatsAppNumber: ${_this.whatsAppNumber}, whatsAppNumberInvalid: ${_this.whatsAppNumberInvalid}, effect: ${_this.effect})';
 }
 
 
@@ -53,7 +55,7 @@ abstract mixin class $ResultStateCopyWith<$Res>  {
   factory $ResultStateCopyWith(ResultState value, $Res Function(ResultState) _then) = _$ResultStateCopyWithImpl;
 @useResult
 $Res call({
- Frame frame, Uint8List jpegBytes, bool isSaving, bool isSharing, String whatsAppNumber, bool whatsAppNumberInvalid, ResultEffect? effect
+ Frame frame, Uint8List jpegBytes, bool isSaving, bool justSaved, bool isSharing, String whatsAppNumber, bool whatsAppNumberInvalid, ResultEffect? effect
 });
 
 
@@ -70,11 +72,12 @@ class _$ResultStateCopyWithImpl<$Res>
 
 /// Create a copy of ResultState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? frame = null,Object? jpegBytes = null,Object? isSaving = null,Object? isSharing = null,Object? whatsAppNumber = null,Object? whatsAppNumberInvalid = null,Object? effect = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? frame = null,Object? jpegBytes = null,Object? isSaving = null,Object? justSaved = null,Object? isSharing = null,Object? whatsAppNumber = null,Object? whatsAppNumberInvalid = null,Object? effect = freezed,}) {
   return _then(ResultState(
 frame: null == frame ? _self.frame : frame // ignore: cast_nullable_to_non_nullable
 as Frame,jpegBytes: null == jpegBytes ? _self.jpegBytes : jpegBytes // ignore: cast_nullable_to_non_nullable
 as Uint8List,isSaving: null == isSaving ? _self.isSaving : isSaving // ignore: cast_nullable_to_non_nullable
+as bool,justSaved: null == justSaved ? _self.justSaved : justSaved // ignore: cast_nullable_to_non_nullable
 as bool,isSharing: null == isSharing ? _self.isSharing : isSharing // ignore: cast_nullable_to_non_nullable
 as bool,whatsAppNumber: null == whatsAppNumber ? _self.whatsAppNumber : whatsAppNumber // ignore: cast_nullable_to_non_nullable
 as String,whatsAppNumberInvalid: null == whatsAppNumberInvalid ? _self.whatsAppNumberInvalid : whatsAppNumberInvalid // ignore: cast_nullable_to_non_nullable
@@ -173,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool justSaved,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ResultState() when $default != null:
-return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
+return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.justSaved,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
   return orElse();
 
 }
@@ -194,10 +197,10 @@ return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool justSaved,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)  $default,) {final _that = this;
 switch (_that) {
 case _ResultState():
-return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
+return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.justSaved,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -214,10 +217,10 @@ return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Frame frame,  Uint8List jpegBytes,  bool isSaving,  bool justSaved,  bool isSharing,  String whatsAppNumber,  bool whatsAppNumberInvalid,  ResultEffect? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _ResultState() when $default != null:
-return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
+return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.justSaved,_that.isSharing,_that.whatsAppNumber,_that.whatsAppNumberInvalid,_that.effect);case _:
   return null;
 
 }
@@ -229,12 +232,15 @@ return $default(_that.frame,_that.jpegBytes,_that.isSaving,_that.isSharing,_that
 
 
 class _ResultState implements ResultState {
-  const _ResultState({required this.frame, required this.jpegBytes, this.isSaving = false, this.isSharing = false, this.whatsAppNumber = '', this.whatsAppNumberInvalid = false, this.effect});
+  const _ResultState({required this.frame, required this.jpegBytes, this.isSaving = false, this.justSaved = false, this.isSharing = false, this.whatsAppNumber = '', this.whatsAppNumberInvalid = false, this.effect});
   
 
 @override final  Frame frame;
 @override final  Uint8List jpegBytes;
 @override@JsonKey() final  bool isSaving;
+/// True for `ResultViewModel.savedBadgeDuration` after a successful
+/// save, so the save button can confirm it in place.
+@override@JsonKey() final  bool justSaved;
 @override@JsonKey() final  bool isSharing;
 @override@JsonKey() final  String whatsAppNumber;
 /// Set when a send was attempted with a number that isn't a full
@@ -252,18 +258,18 @@ _$ResultStateCopyWith<_ResultState> get copyWith => __$ResultStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResultState&&(identical(other.frame, frame) || other.frame == frame)&&const DeepCollectionEquality().equals(other.jpegBytes, jpegBytes)&&(identical(other.isSaving, isSaving) || other.isSaving == isSaving)&&(identical(other.isSharing, isSharing) || other.isSharing == isSharing)&&(identical(other.whatsAppNumber, whatsAppNumber) || other.whatsAppNumber == whatsAppNumber)&&(identical(other.whatsAppNumberInvalid, whatsAppNumberInvalid) || other.whatsAppNumberInvalid == whatsAppNumberInvalid)&&(identical(other.effect, effect) || other.effect == effect));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResultState&&(identical(other.frame, frame) || other.frame == frame)&&const DeepCollectionEquality().equals(other.jpegBytes, jpegBytes)&&(identical(other.isSaving, isSaving) || other.isSaving == isSaving)&&(identical(other.justSaved, justSaved) || other.justSaved == justSaved)&&(identical(other.isSharing, isSharing) || other.isSharing == isSharing)&&(identical(other.whatsAppNumber, whatsAppNumber) || other.whatsAppNumber == whatsAppNumber)&&(identical(other.whatsAppNumberInvalid, whatsAppNumberInvalid) || other.whatsAppNumberInvalid == whatsAppNumberInvalid)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,frame,const DeepCollectionEquality().hash(jpegBytes),isSaving,isSharing,whatsAppNumber,whatsAppNumberInvalid,effect);
+    return Object.hash(runtimeType,frame,const DeepCollectionEquality().hash(jpegBytes),isSaving,justSaved,isSharing,whatsAppNumber,whatsAppNumberInvalid,effect);
 }
 
 @override
 String toString() {
-    return 'ResultState(frame: $frame, jpegBytes: $jpegBytes, isSaving: $isSaving, isSharing: $isSharing, whatsAppNumber: $whatsAppNumber, whatsAppNumberInvalid: $whatsAppNumberInvalid, effect: $effect)';
+    return 'ResultState(frame: $frame, jpegBytes: $jpegBytes, isSaving: $isSaving, justSaved: $justSaved, isSharing: $isSharing, whatsAppNumber: $whatsAppNumber, whatsAppNumberInvalid: $whatsAppNumberInvalid, effect: $effect)';
 }
 
 
@@ -274,7 +280,7 @@ abstract mixin class _$ResultStateCopyWith<$Res> implements $ResultStateCopyWith
   factory _$ResultStateCopyWith(_ResultState value, $Res Function(_ResultState) _then) = __$ResultStateCopyWithImpl;
 @override @useResult
 $Res call({
- Frame frame, Uint8List jpegBytes, bool isSaving, bool isSharing, String whatsAppNumber, bool whatsAppNumberInvalid, ResultEffect? effect
+ Frame frame, Uint8List jpegBytes, bool isSaving, bool justSaved, bool isSharing, String whatsAppNumber, bool whatsAppNumberInvalid, ResultEffect? effect
 });
 
 
@@ -291,11 +297,12 @@ class __$ResultStateCopyWithImpl<$Res>
 
 /// Create a copy of ResultState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? frame = null,Object? jpegBytes = null,Object? isSaving = null,Object? isSharing = null,Object? whatsAppNumber = null,Object? whatsAppNumberInvalid = null,Object? effect = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? frame = null,Object? jpegBytes = null,Object? isSaving = null,Object? justSaved = null,Object? isSharing = null,Object? whatsAppNumber = null,Object? whatsAppNumberInvalid = null,Object? effect = freezed,}) {
   return _then(_ResultState(
 frame: null == frame ? _self.frame : frame // ignore: cast_nullable_to_non_nullable
 as Frame,jpegBytes: null == jpegBytes ? _self.jpegBytes : jpegBytes // ignore: cast_nullable_to_non_nullable
 as Uint8List,isSaving: null == isSaving ? _self.isSaving : isSaving // ignore: cast_nullable_to_non_nullable
+as bool,justSaved: null == justSaved ? _self.justSaved : justSaved // ignore: cast_nullable_to_non_nullable
 as bool,isSharing: null == isSharing ? _self.isSharing : isSharing // ignore: cast_nullable_to_non_nullable
 as bool,whatsAppNumber: null == whatsAppNumber ? _self.whatsAppNumber : whatsAppNumber // ignore: cast_nullable_to_non_nullable
 as String,whatsAppNumberInvalid: null == whatsAppNumberInvalid ? _self.whatsAppNumberInvalid : whatsAppNumberInvalid // ignore: cast_nullable_to_non_nullable

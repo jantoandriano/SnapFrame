@@ -12,6 +12,10 @@ abstract class ResultState with _$ResultState {
     required Frame frame,
     required Uint8List jpegBytes,
     @Default(false) bool isSaving,
+
+    /// True for `ResultViewModel.savedBadgeDuration` after a successful
+    /// save, so the save button can confirm it in place.
+    @Default(false) bool justSaved,
     @Default(false) bool isSharing,
     @Default('') String whatsAppNumber,
 

@@ -102,6 +102,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resultSave => 'save';
 
   @override
+  String get resultSaving => 'saving…';
+
+  @override
+  String get resultSaved => 'saved!';
+
+  @override
   String get resultShare => 'send to WhatsApp';
 
   @override
