@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:snapframe/features/frames/domain/frame.dart';
 import 'package:snapframe/features/result/data/result_providers.dart';
+import 'package:snapframe/features/result/domain/whatsapp_number.dart';
 import 'package:snapframe/features/result/presentation/state/result_effect.dart';
 import 'package:snapframe/features/result/presentation/state/result_state.dart';
 
@@ -32,11 +33,22 @@ class ResultViewModel extends _$ResultViewModel {
     );
   }
 
-  Future<void> onSharePressed() async {
+  void onWhatsAppNumberChanged(String value) {
+    state = state.copyWith(whatsAppNumber: value, whatsAppNumberInvalid: false);
+  }
+
+  Future<void> onSendToWhatsAppPressed() async {
+    final phone = normalizeWhatsAppNumber(state.whatsAppNumber);
+    if (phone == null) {
+      state = state.copyWith(whatsAppNumberInvalid: true);
+      return;
+    }
+
     state = state.copyWith(isSharing: true);
     final repo = ref.read(saveShareRepositoryProvider);
-    final result = await repo.share(
+    final result = await repo.shareToWhatsApp(
       state.jpegBytes,
+      phone: phone,
       text: 'made with SnapFrame ✦',
     );
     state = state.copyWith(isSharing: false);

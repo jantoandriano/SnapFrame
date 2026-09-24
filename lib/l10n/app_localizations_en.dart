@@ -102,7 +102,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resultSave => 'save';
 
   @override
-  String get resultShare => 'share it';
+  String get resultShare => 'send to WhatsApp';
+
+  @override
+  String get resultWhatsAppNumber => 'WhatsApp number';
+
+  @override
+  String get resultWhatsAppNumberHint =>
+      'with country code, e.g. 6281234567890';
+
+  @override
+  String get resultWhatsAppNumberInvalid =>
+      'add the country code, no leading 0';
 
   @override
   String get resultAgain => 'again!';

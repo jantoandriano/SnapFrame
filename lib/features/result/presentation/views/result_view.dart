@@ -101,6 +101,16 @@ class _ResultViewState extends ConsumerState<ResultView> {
                     ),
                   ),
                   const SizedBox(height: SnapSpacing.lg),
+                  BrutalTextField(
+                    label: l10n.resultWhatsAppNumber,
+                    hintText: l10n.resultWhatsAppNumberHint,
+                    keyboardType: TextInputType.phone,
+                    errorText: state.whatsAppNumberInvalid
+                        ? l10n.resultWhatsAppNumberInvalid
+                        : null,
+                    onChanged: notifier.onWhatsAppNumberChanged,
+                  ),
+                  const SizedBox(height: SnapSpacing.md),
                   Wrap(
                     spacing: SnapSpacing.md,
                     runSpacing: SnapSpacing.md,
@@ -115,9 +125,10 @@ class _ResultViewState extends ConsumerState<ResultView> {
                       ),
                       ChunkyButton(
                         label: l10n.resultShare,
-                        onPressed: state.isSharing
+                        onPressed:
+                            state.isSharing || state.whatsAppNumber.isEmpty
                             ? null
-                            : notifier.onSharePressed,
+                            : notifier.onSendToWhatsAppPressed,
                       ),
                       ChunkyButton(
                         label: l10n.resultAgain,

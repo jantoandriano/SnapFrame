@@ -44,6 +44,11 @@ kotlin {
     }
 }
 
+dependencies {
+    // FileProvider for handing the composed JPEG to WhatsApp.
+    implementation("androidx.core:core:1.13.1")
+}
+
 flutter {
     source = "../.."
 }

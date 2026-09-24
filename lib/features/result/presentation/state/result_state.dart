@@ -13,6 +13,11 @@ abstract class ResultState with _$ResultState {
     required Uint8List jpegBytes,
     @Default(false) bool isSaving,
     @Default(false) bool isSharing,
+    @Default('') String whatsAppNumber,
+
+    /// Set when a send was attempted with a number that isn't a full
+    /// international one; cleared as soon as the user edits it.
+    @Default(false) bool whatsAppNumberInvalid,
     ResultEffect? effect,
   }) = _ResultState;
 }

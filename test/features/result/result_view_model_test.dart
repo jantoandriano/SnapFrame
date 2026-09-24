@@ -61,18 +61,73 @@ void main() {
     expect((state.effect! as ShowResultSnackEffect).message, 'nope');
   });
 
-  test('onSharePressed clears isSharing on success with no snack', () async {
-    when(() => repo.share(any(), text: any(named: 'text')))
-        .thenAnswer((_) async => const Result.success(null));
+  void stubWhatsApp(Result<void> result) {
+    when(
+      () => repo.shareToWhatsApp(
+        any(),
+        phone: any(named: 'phone'),
+        text: any(named: 'text'),
+      ),
+    ).thenAnswer((_) async => result);
+  }
+
+  test('sending to WhatsApp passes the normalized number, no snack', () async {
+    stubWhatsApp(const Result.success(null));
 
     final provider = resultViewModelProvider(sampleFrame, jpeg);
     container.listen(provider, (_, _) {});
+    final notifier = container.read(provider.notifier)
+      ..onWhatsAppNumberChanged('+62 812-3456-7890');
 
-    await container.read(provider.notifier).onSharePressed();
+    await notifier.onSendToWhatsAppPressed();
 
     final state = container.read(provider);
     expect(state.isSharing, isFalse);
     expect(state.effect, isNull);
+    verify(
+      () => repo.shareToWhatsApp(
+        jpeg,
+        phone: '6281234567890',
+        text: any(named: 'text'),
+      ),
+    ).called(1);
+  });
+
+  test('an invalid number flags the field and sends nothing', () async {
+    final provider = resultViewModelProvider(sampleFrame, jpeg);
+    container.listen(provider, (_, _) {});
+    final notifier = container.read(provider.notifier)
+      ..onWhatsAppNumberChanged('081234567890');
+
+    await notifier.onSendToWhatsAppPressed();
+
+    expect(container.read(provider).whatsAppNumberInvalid, isTrue);
+    verifyNever(
+      () => repo.shareToWhatsApp(
+        any(),
+        phone: any(named: 'phone'),
+        text: any(named: 'text'),
+      ),
+    );
+
+    notifier.onWhatsAppNumberChanged('6281234567890');
+    expect(container.read(provider).whatsAppNumberInvalid, isFalse);
+  });
+
+  test('a failed WhatsApp send shows an error snack', () async {
+    stubWhatsApp(const Result.failure(NotFoundException('no WhatsApp')));
+
+    final provider = resultViewModelProvider(sampleFrame, jpeg);
+    container.listen(provider, (_, _) {});
+    final notifier = container.read(provider.notifier)
+      ..onWhatsAppNumberChanged('6281234567890');
+
+    await notifier.onSendToWhatsAppPressed();
+
+    final state = container.read(provider);
+    expect(state.isSharing, isFalse);
+    expect((state.effect! as ShowResultSnackEffect).isError, isTrue);
+    expect((state.effect! as ShowResultSnackEffect).message, 'no WhatsApp');
   });
 
   test('onAgainPressed requests a fresh capture of the same frame', () {

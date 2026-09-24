@@ -271,8 +271,26 @@ abstract class AppLocalizations {
   /// No description provided for @resultShare.
   ///
   /// In en, this message translates to:
-  /// **'share it'**
+  /// **'send to WhatsApp'**
   String get resultShare;
+
+  /// No description provided for @resultWhatsAppNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp number'**
+  String get resultWhatsAppNumber;
+
+  /// No description provided for @resultWhatsAppNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'with country code, e.g. 6281234567890'**
+  String get resultWhatsAppNumberHint;
+
+  /// No description provided for @resultWhatsAppNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'add the country code, no leading 0'**
+  String get resultWhatsAppNumberInvalid;
 
   /// No description provided for @resultAgain.
   ///
