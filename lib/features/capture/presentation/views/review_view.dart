@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,10 +71,7 @@ class ReviewView extends ConsumerWidget {
                   for (var i = 0; i < state.captures.length; i++)
                     GestureDetector(
                       onTap: () => notifier.onSlotTapped(i),
-                      child: Image.file(
-                        File(state.captures[i].path),
-                        fit: BoxFit.cover,
-                      ),
+                      child: XFileImage(state.captures[i]),
                     ),
                 ],
               ),

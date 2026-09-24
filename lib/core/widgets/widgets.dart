@@ -8,3 +8,4 @@ export 'pill_tab_bar.dart';
 export 'slot_strip.dart';
 export 'snap_snack.dart';
 export 'sticker_badge.dart';
+export 'xfile_image.dart';
