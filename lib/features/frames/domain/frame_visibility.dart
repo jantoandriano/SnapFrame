@@ -1,0 +1,1 @@
+enum FrameVisibility { private, public }
