@@ -6,6 +6,7 @@ import 'package:snapframe/app/router.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/widgets/widgets.dart';
 import 'package:snapframe/features/frames/domain/frame.dart';
+import 'package:snapframe/features/frames/domain/tier.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_effect.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_filter.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_state.dart';
@@ -140,6 +141,7 @@ class _Body extends StatelessWidget {
           final frame = state.frames[index];
           return FrameCard(
             title: frame.title,
+            isPro: frame.tier == Tier.pro,
             isLocked: state.isLocked(frame),
             thumbnail: Image.asset(frame.thumbnailPath, fit: BoxFit.cover),
             onTap: () => onTap(frame),

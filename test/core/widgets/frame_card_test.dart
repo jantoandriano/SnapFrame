@@ -27,7 +27,9 @@ void main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets('shows a PRO sticker only when locked', (tester) async {
+  testWidgets('locked frame shows the PRO sticker and the lock', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       wrapForTest(const SizedBox(width: 160, child: FrameCard(title: 'vip'))),
     );
@@ -42,6 +44,19 @@ void main() {
       ),
     );
     expect(find.byType(StickerBadge), findsOneWidget);
+    expect(find.byIcon(Icons.lock), findsOneWidget);
+  });
+
+  testWidgets('unlocked pro frame keeps the PRO sticker but drops the lock', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      wrapForTest(
+        const SizedBox(width: 160, child: FrameCard(title: 'vip', isPro: true)),
+      ),
+    );
+    expect(find.byType(StickerBadge), findsOneWidget);
+    expect(find.byIcon(Icons.lock), findsNothing);
   });
 
   testWidgets('golden - unlocked, light', (tester) async {
