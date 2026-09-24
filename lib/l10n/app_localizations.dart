@@ -304,6 +304,12 @@ abstract class AppLocalizations {
   /// **'all good, let\'s go ✦'**
   String get reviewContinue;
 
+  /// No description provided for @captureGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'got it! ✦'**
+  String get captureGotIt;
+
   /// No description provided for @captureSlotLabel.
   ///
   /// In en, this message translates to:

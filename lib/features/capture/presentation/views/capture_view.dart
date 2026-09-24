@@ -116,7 +116,9 @@ class _CaptureViewState extends ConsumerState<CaptureView>
                   ),
                 ),
               ),
-              Center(
+              // Full-screen (not centered) so the capture flash and the
+              // "got it" scrim cover the whole preview.
+              Positioned.fill(
                 child: _PhaseOverlay(
                   phase: state.phase,
                   // A retake is a single shot, so it's always the last one.
@@ -159,6 +161,12 @@ class _PhaseOverlay extends StatelessWidget {
       CaptureCapturing() => CountdownOverlay(
         tick: 0,
         showCaptureIcon: isFinalShot,
+      ),
+      CaptureCaptured(:final photo) => CapturedOverlay(
+        // Keyed per photo so back-to-back shots each replay the animation.
+        key: ValueKey(photo.path),
+        photo: XFileImage(photo, cacheWidth: 480),
+        label: AppLocalizations.of(context)!.captureGotIt,
       ),
       CaptureIdle() || CaptureDone() => const SizedBox.shrink(),
     };

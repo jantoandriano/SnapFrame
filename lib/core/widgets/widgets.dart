@@ -1,4 +1,5 @@
 export 'brutal_text_field.dart';
+export 'captured_overlay.dart';
 export 'chunky_button.dart';
 export 'countdown_overlay.dart';
 export 'empty_state.dart';

@@ -58,7 +58,7 @@ final class CaptureViewModelProvider
   }
 }
 
-String _$captureViewModelHash() => r'3bd8253891431fee76ffc182237a45bc65cee767';
+String _$captureViewModelHash() => r'd9f6ca63d5b4316e94cd3213a1eac3e682939479';
 
 final class CaptureViewModelFamily extends $Family
     with

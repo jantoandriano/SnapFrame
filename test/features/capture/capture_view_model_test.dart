@@ -88,13 +88,35 @@ void main() {
     await Future<void>.delayed(const Duration(milliseconds: 100));
     expect(container.read(provider).phase, const CapturePhase.countingDown(1));
 
-    await Future<void>.delayed(const Duration(seconds: 4));
+    // 2 slots × (1s countdown + 1s "got it" hold), plus slack.
+    await Future<void>.delayed(const Duration(seconds: 5));
 
     final state = container.read(provider);
     expect(state.phase, const CapturePhase.done());
     expect(state.captures.every((c) => c != null), isTrue);
     expect(state.effect, isA<CaptureFinishedEffect>());
     expect((state.effect! as CaptureFinishedEffect).photos, hasLength(2));
+  });
+
+  test('holds on the captured photo before the next countdown', () async {
+    final photo = XFile.fromData(Uint8List(0), name: 'p1');
+    when(() => repo.takePicture())
+        .thenAnswer((_) async => Result.success(photo));
+
+    final provider = captureViewModelProvider(frame);
+    keepAlive(provider);
+
+    // Past the 1s countdown, inside the hold.
+    await Future<void>.delayed(const Duration(milliseconds: 1400));
+    var state = container.read(provider);
+    expect(state.phase, CapturePhase.captured(photo));
+    expect(state.currentSlotIndex, 0);
+
+    // Hold over: on to the second slot's countdown.
+    await Future<void>.delayed(capturedHoldDuration);
+    state = container.read(provider);
+    expect(state.currentSlotIndex, 1);
+    expect(state.phase, isA<CaptureCountingDown>());
   });
 
   test('retake mode captures only the requested slot', () async {
@@ -104,7 +126,8 @@ void main() {
     final provider = captureViewModelProvider(frame, retakeSlotIndex: 1);
     keepAlive(provider);
 
-    await Future<void>.delayed(const Duration(seconds: 2));
+    // 1s countdown + 1s hold, plus slack.
+    await Future<void>.delayed(const Duration(seconds: 3));
 
     final state = container.read(provider);
     expect(state.phase, const CapturePhase.done());

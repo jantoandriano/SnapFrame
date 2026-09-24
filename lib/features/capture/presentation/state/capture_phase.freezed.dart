@@ -56,13 +56,14 @@ extension CapturePhasePatterns on CapturePhase {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CaptureIdle value)?  idle,TResult Function( CaptureCountingDown value)?  countingDown,TResult Function( CaptureCapturing value)?  capturing,TResult Function( CaptureDone value)?  done,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CaptureIdle value)?  idle,TResult Function( CaptureCountingDown value)?  countingDown,TResult Function( CaptureCapturing value)?  capturing,TResult Function( CaptureCaptured value)?  captured,TResult Function( CaptureDone value)?  done,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CaptureIdle() when idle != null:
 return idle(_that);case CaptureCountingDown() when countingDown != null:
 return countingDown(_that);case CaptureCapturing() when capturing != null:
-return capturing(_that);case CaptureDone() when done != null:
+return capturing(_that);case CaptureCaptured() when captured != null:
+return captured(_that);case CaptureDone() when done != null:
 return done(_that);case _:
   return orElse();
 
@@ -81,13 +82,14 @@ return done(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CaptureIdle value)  idle,required TResult Function( CaptureCountingDown value)  countingDown,required TResult Function( CaptureCapturing value)  capturing,required TResult Function( CaptureDone value)  done,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CaptureIdle value)  idle,required TResult Function( CaptureCountingDown value)  countingDown,required TResult Function( CaptureCapturing value)  capturing,required TResult Function( CaptureCaptured value)  captured,required TResult Function( CaptureDone value)  done,}){
 final _that = this;
 switch (_that) {
 case CaptureIdle():
 return idle(_that);case CaptureCountingDown():
 return countingDown(_that);case CaptureCapturing():
-return capturing(_that);case CaptureDone():
+return capturing(_that);case CaptureCaptured():
+return captured(_that);case CaptureDone():
 return done(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -102,13 +104,14 @@ return done(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CaptureIdle value)?  idle,TResult? Function( CaptureCountingDown value)?  countingDown,TResult? Function( CaptureCapturing value)?  capturing,TResult? Function( CaptureDone value)?  done,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CaptureIdle value)?  idle,TResult? Function( CaptureCountingDown value)?  countingDown,TResult? Function( CaptureCapturing value)?  capturing,TResult? Function( CaptureCaptured value)?  captured,TResult? Function( CaptureDone value)?  done,}){
 final _that = this;
 switch (_that) {
 case CaptureIdle() when idle != null:
 return idle(_that);case CaptureCountingDown() when countingDown != null:
 return countingDown(_that);case CaptureCapturing() when capturing != null:
-return capturing(_that);case CaptureDone() when done != null:
+return capturing(_that);case CaptureCaptured() when captured != null:
+return captured(_that);case CaptureDone() when done != null:
 return done(_that);case _:
   return null;
 
@@ -126,12 +129,13 @@ return done(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  idle,TResult Function( int n)?  countingDown,TResult Function()?  capturing,TResult Function()?  done,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  idle,TResult Function( int n)?  countingDown,TResult Function()?  capturing,TResult Function( XFile photo)?  captured,TResult Function()?  done,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CaptureIdle() when idle != null:
 return idle();case CaptureCountingDown() when countingDown != null:
 return countingDown(_that.n);case CaptureCapturing() when capturing != null:
-return capturing();case CaptureDone() when done != null:
+return capturing();case CaptureCaptured() when captured != null:
+return captured(_that.photo);case CaptureDone() when done != null:
 return done();case _:
   return orElse();
 
@@ -150,12 +154,13 @@ return done();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  idle,required TResult Function( int n)  countingDown,required TResult Function()  capturing,required TResult Function()  done,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  idle,required TResult Function( int n)  countingDown,required TResult Function()  capturing,required TResult Function( XFile photo)  captured,required TResult Function()  done,}) {final _that = this;
 switch (_that) {
 case CaptureIdle():
 return idle();case CaptureCountingDown():
 return countingDown(_that.n);case CaptureCapturing():
-return capturing();case CaptureDone():
+return capturing();case CaptureCaptured():
+return captured(_that.photo);case CaptureDone():
 return done();}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -170,12 +175,13 @@ return done();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  idle,TResult? Function( int n)?  countingDown,TResult? Function()?  capturing,TResult? Function()?  done,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  idle,TResult? Function( int n)?  countingDown,TResult? Function()?  capturing,TResult? Function( XFile photo)?  captured,TResult? Function()?  done,}) {final _that = this;
 switch (_that) {
 case CaptureIdle() when idle != null:
 return idle();case CaptureCountingDown() when countingDown != null:
 return countingDown(_that.n);case CaptureCapturing() when capturing != null:
-return capturing();case CaptureDone() when done != null:
+return capturing();case CaptureCaptured() when captured != null:
+return captured(_that.photo);case CaptureDone() when done != null:
 return done();case _:
   return null;
 
@@ -315,6 +321,74 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class CaptureCaptured implements CapturePhase {
+  const CaptureCaptured(this.photo);
+  
+
+ final  XFile photo;
+
+/// Create a copy of CapturePhase
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CaptureCapturedCopyWith<CaptureCaptured> get copyWith => _$CaptureCapturedCopyWithImpl<CaptureCaptured>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is CaptureCaptured&&(identical(other.photo, photo) || other.photo == photo));
+}
+
+
+@override
+int get hashCode {
+    return Object.hash(runtimeType,photo);
+}
+
+@override
+String toString() {
+    return 'CapturePhase.captured(photo: $photo)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CaptureCapturedCopyWith<$Res> implements $CapturePhaseCopyWith<$Res> {
+  factory $CaptureCapturedCopyWith(CaptureCaptured value, $Res Function(CaptureCaptured) _then) = _$CaptureCapturedCopyWithImpl;
+@useResult
+$Res call({
+ XFile photo
+});
+
+
+
+
+}
+/// @nodoc
+class _$CaptureCapturedCopyWithImpl<$Res>
+    implements $CaptureCapturedCopyWith<$Res> {
+  _$CaptureCapturedCopyWithImpl(this._self, this._then);
+
+  final CaptureCaptured _self;
+  final $Res Function(CaptureCaptured) _then;
+
+/// Create a copy of CapturePhase
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? photo = null,}) {
+  return _then(CaptureCaptured(
+null == photo ? _self.photo : photo // ignore: cast_nullable_to_non_nullable
+as XFile,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

@@ -12,6 +12,9 @@ import 'package:snapframe/features/frames/domain/frame.dart';
 
 part 'capture_view_model.g.dart';
 
+/// How long the "got it" confirmation stays up after each shot.
+const capturedHoldDuration = Duration(milliseconds: 1000);
+
 @riverpod
 class CaptureViewModel extends _$CaptureViewModel {
   late final CaptureRepository _repo;
@@ -48,7 +51,13 @@ class CaptureViewModel extends _$CaptureViewModel {
     result.when(
       success: (_) {
         state = state.copyWith(error: null);
-        _startCountdown();
+        // Paused mid-confirmation: that slot is already shot, move on
+        // rather than re-shooting it.
+        if (state.phase is CaptureCaptured) {
+          unawaited(_advance());
+        } else {
+          _startCountdown();
+        }
       },
       failure: (e) => state = state.copyWith(error: e),
     );
@@ -74,14 +83,21 @@ class CaptureViewModel extends _$CaptureViewModel {
 
   Future<void> _capture() async {
     final result = await _repo.takePicture();
-    await result.when(
-      success: (photo) async {
+    result.when(
+      success: (photo) {
         final updated = [...state.captures];
         updated[state.currentSlotIndex] = photo;
-        state = state.copyWith(captures: updated);
-        await _advance();
+        state = state.copyWith(
+          captures: updated,
+          phase: CapturePhase.captured(photo),
+        );
+        // Shares the countdown timer slot so dispose/pause cancel it too.
+        _countdownTimer = Timer(
+          capturedHoldDuration,
+          () => unawaited(_advance()),
+        );
       },
-      failure: (e) async {
+      failure: (e) {
         state = state.copyWith(error: e, phase: const CapturePhase.idle());
       },
     );

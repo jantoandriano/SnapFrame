@@ -46,6 +46,7 @@
   "resultWhatsAppNumberInvalid": "add the country code, no leading 0",
   "resultAgain": "again!",
   "reviewContinue": "all good, let's go ✦",
+  "captureGotIt": "got it! ✦",
   "captureSlotLabel": "pic {current} of {total}",
   "@captureSlotLabel": {
     "placeholders": {
