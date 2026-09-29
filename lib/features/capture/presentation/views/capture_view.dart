@@ -168,14 +168,14 @@ class _LensToggle extends StatelessWidget {
             color: tokens.sun,
             borderRadius: BorderRadius.circular(SnapRadius.sm),
             border: Border.all(
-              color: SnapTokens.light.ink,
+              color: SnapTokens.onAccent,
               width: SnapTokens.borderWidth,
             ),
             boxShadow: const [
               BoxShadow(color: Colors.white, offset: SnapShadow.small),
             ],
           ),
-          child: Icon(Icons.cameraswitch, color: SnapTokens.light.ink),
+          child: const Icon(Icons.cameraswitch, color: SnapTokens.onAccent),
         ),
       ),
     );

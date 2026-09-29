@@ -41,8 +41,10 @@ class StickerBadge extends StatelessWidget {
         ),
         child: Text(
           label.toUpperCase(),
-          style: Theme.of(context).textTheme.labelSmall
-              ?.copyWith(color: tokens.ink, fontWeight: FontWeight.w800),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: SnapTokens.onAccent,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
     );

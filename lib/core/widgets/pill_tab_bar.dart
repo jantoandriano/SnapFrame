@@ -83,7 +83,7 @@ class _Segment extends StatelessWidget {
           child: Text(
             label.toUpperCase(),
             style: Theme.of(context).textTheme.labelLarge
-                ?.copyWith(color: tokens.ink),
+                ?.copyWith(color: selected ? SnapTokens.onAccent : tokens.ink),
           ),
         ),
       ),
@@ -135,7 +135,7 @@ class PillChip extends StatelessWidget {
           child: Text(
             label.toUpperCase(),
             style: Theme.of(context).textTheme.labelLarge
-                ?.copyWith(color: tokens.ink),
+                ?.copyWith(color: selected ? SnapTokens.onAccent : tokens.ink),
           ),
         ),
       ),

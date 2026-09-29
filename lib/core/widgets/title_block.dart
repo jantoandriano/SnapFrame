@@ -54,7 +54,7 @@ class TitleBlock extends StatelessWidget {
             // The block fills are always bright, so the text stays dark
             // in both themes.
             style: Theme.of(context).textTheme.displaySmall
-                ?.copyWith(color: SnapTokens.light.ink),
+                ?.copyWith(color: SnapTokens.onAccent),
           ),
         ),
       ),

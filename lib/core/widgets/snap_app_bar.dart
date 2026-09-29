@@ -53,7 +53,7 @@ class SnapAppBar extends StatelessWidget implements PreferredSizeWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(color: SnapTokens.light.ink),
+                          ?.copyWith(color: SnapTokens.onAccent),
                     ),
                   ),
                 ),
@@ -92,9 +92,7 @@ class _BackButton extends StatelessWidget {
               color: tokens.ink,
               width: SnapTokens.borderWidth,
             ),
-            boxShadow: [
-              BoxShadow(color: tokens.ink, offset: SnapShadow.small),
-            ],
+            boxShadow: [BoxShadow(color: tokens.ink, offset: SnapShadow.small)],
           ),
           child: Icon(Icons.arrow_back_rounded, color: tokens.ink),
         ),

@@ -64,6 +64,9 @@ class _ChunkyButtonState extends State<ChunkyButton> {
       tokens,
       enabled: widget.onPressed != null || widget.isLoading,
     );
+    final foreground = widget.variant == SnapButtonVariant.ghost
+        ? tokens.ink
+        : SnapTokens.onAccent;
 
     // The label renders uppercase; semantics keep the original casing so
     // screen readers don't spell it out letter by letter.
@@ -109,13 +112,13 @@ class _ChunkyButtonState extends State<ChunkyButton> {
                   const LoadingBlob(size: 28),
                   const SizedBox(width: SnapSpacing.sm),
                 ] else if (widget.icon != null) ...[
-                  Icon(widget.icon, size: 22, color: tokens.ink),
+                  Icon(widget.icon, size: 22, color: foreground),
                   const SizedBox(width: SnapSpacing.sm),
                 ],
                 Text(
                   widget.label.toUpperCase(),
                   style: Theme.of(context).textTheme.titleMedium
-                      ?.copyWith(color: tokens.ink),
+                      ?.copyWith(color: foreground),
                 ),
               ],
             ),

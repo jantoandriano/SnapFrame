@@ -61,6 +61,11 @@ class SnapTokens extends ThemeExtension<SnapTokens> {
     error: Color(0xFFFF3B3B),
   );
 
+  /// Text and icons on the bright accent fills (lime, pink, sun, lilac,
+  /// success). Those fills are the same in both themes, so this stays dark
+  /// even when [ink] flips light in dark mode.
+  static const Color onAccent = Color(0xFF111111);
+
   static const double borderWidth = 3.5;
 
   /// For small elements (stickers, loading dots) where the full border

@@ -39,7 +39,7 @@ class SnapSnackContent extends StatelessWidget {
     final tokens = context.tokens;
     final (fill, textColor) = switch (variant) {
       SnapSnackVariant.neutral => (tokens.surface, tokens.ink),
-      SnapSnackVariant.success => (tokens.success, tokens.ink),
+      SnapSnackVariant.success => (tokens.success, SnapTokens.onAccent),
       SnapSnackVariant.error => (tokens.error, Colors.white),
     };
 
