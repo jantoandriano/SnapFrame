@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapframe/app/router.dart';
+import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/widgets/widgets.dart';
+import 'package:snapframe/features/auth/data/auth_providers.dart';
 import 'package:snapframe/features/frames/domain/frame.dart';
 import 'package:snapframe/features/frames/domain/tier.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_effect.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_filter.dart';
 import 'package:snapframe/features/frames/presentation/state/browse_state.dart';
 import 'package:snapframe/features/frames/presentation/view_models/browse_view_model.dart';
+import 'package:snapframe/features/profile/presentation/views/profile_view.dart';
 import 'package:snapframe/l10n/app_localizations.dart';
 
 String _filterLabel(AppLocalizations l10n, BrowseFilter filter) {
@@ -30,6 +33,7 @@ class BrowseView extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(browseViewModelProvider);
     final notifier = ref.read(browseViewModelProvider.notifier);
+    final displayName = ref.watch(currentUserStreamProvider).value?.displayName;
 
     ref.listen(browseViewModelProvider, (previous, next) {
       final effect = next.effect;
@@ -49,7 +53,19 @@ class BrowseView extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: SnapAppBar(title: l10n.browseTitle),
+      appBar: SnapAppBar(
+        title: l10n.browseTitle,
+        trailing: SnapSquareButton(
+          semanticLabel: l10n.profileOpen,
+          color: context.tokens.lilac,
+          onPressed: () => unawaited(const ProfileRoute().push<void>(context)),
+          child: Text(
+            profileInitials(displayName ?? ''),
+            style: Theme.of(context).textTheme.titleMedium
+                ?.copyWith(color: SnapTokens.onAccent),
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Padding(

@@ -11,6 +11,7 @@ import 'package:snapframe/features/capture/presentation/views/review_view.dart';
 import 'package:snapframe/features/frames/domain/frame.dart';
 import 'package:snapframe/features/frames/presentation/views/browse_view.dart';
 import 'package:snapframe/features/frames/presentation/views/frame_detail_view.dart';
+import 'package:snapframe/features/profile/presentation/views/profile_view.dart';
 import 'package:snapframe/features/result/presentation/views/result_view.dart';
 
 part 'router.g.dart';
@@ -37,6 +38,15 @@ class BrowseRoute extends GoRouteData with $BrowseRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const BrowseView();
+}
+
+@TypedGoRoute<ProfileRoute>(path: '/profile')
+class ProfileRoute extends GoRouteData with $ProfileRoute {
+  const ProfileRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ProfileView();
 }
 
 @TypedGoRoute<FrameDetailRoute>(path: '/frame')

@@ -63,5 +63,35 @@
     }
   },
   "paywallTitle": "go pro, unlock everything ✦",
-  "errorGeneric": "oops, something flopped. try again?"
+  "errorGeneric": "oops, something flopped. try again?",
+  "profileTitle": "profile",
+  "profileOpen": "open profile",
+  "profileMemberSince": "member since {date}",
+  "@profileMemberSince": {
+    "placeholders": {
+      "date": {"type": "DateTime", "format": "yMMMd"}
+    }
+  },
+  "profileTierPro": "PRO ✦",
+  "profileTierFree": "FREE",
+  "profileThemeLabel": "theme",
+  "profileThemeLight": "light",
+  "profileThemeDark": "dark",
+  "profileThemeSystem": "system",
+  "profilePlanLabel": "your plan",
+  "profilePerks": "every pro frame, no locks, new drops first",
+  "profileSubscribe": "go pro",
+  "profileProUntil": "pro until {date}",
+  "@profileProUntil": {
+    "placeholders": {
+      "date": {"type": "DateTime", "format": "yMMMd"}
+    }
+  },
+  "profileUnsubscribe": "cancel pro",
+  "profileSubscribedSnack": "you're pro now ✦",
+  "profileCancelledSnack": "pro cancelled. back to free",
+  "profileCancelConfirmTitle": "cancel pro?",
+  "profileCancelConfirmBody": "pro frames lock again right away.",
+  "profileCancelConfirmYes": "yes, cancel",
+  "profileCancelConfirmNo": "keep pro"
 }

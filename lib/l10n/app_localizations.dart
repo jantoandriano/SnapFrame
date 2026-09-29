@@ -345,6 +345,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'oops, something flopped. try again?'**
   String get errorGeneric;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'profile'**
+  String get profileTitle;
+
+  /// No description provided for @profileOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'open profile'**
+  String get profileOpen;
+
+  /// No description provided for @profileMemberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'member since {date}'**
+  String profileMemberSince(DateTime date);
+
+  /// No description provided for @profileTierPro.
+  ///
+  /// In en, this message translates to:
+  /// **'PRO ✦'**
+  String get profileTierPro;
+
+  /// No description provided for @profileTierFree.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
+  String get profileTierFree;
+
+  /// No description provided for @profileThemeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'theme'**
+  String get profileThemeLabel;
+
+  /// No description provided for @profileThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'light'**
+  String get profileThemeLight;
+
+  /// No description provided for @profileThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'dark'**
+  String get profileThemeDark;
+
+  /// No description provided for @profileThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'system'**
+  String get profileThemeSystem;
+
+  /// No description provided for @profilePlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'your plan'**
+  String get profilePlanLabel;
+
+  /// No description provided for @profilePerks.
+  ///
+  /// In en, this message translates to:
+  /// **'every pro frame, no locks, new drops first'**
+  String get profilePerks;
+
+  /// No description provided for @profileSubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'go pro'**
+  String get profileSubscribe;
+
+  /// No description provided for @profileProUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'pro until {date}'**
+  String profileProUntil(DateTime date);
+
+  /// No description provided for @profileUnsubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'cancel pro'**
+  String get profileUnsubscribe;
+
+  /// No description provided for @profileSubscribedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'you\'re pro now ✦'**
+  String get profileSubscribedSnack;
+
+  /// No description provided for @profileCancelledSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'pro cancelled. back to free'**
+  String get profileCancelledSnack;
+
+  /// No description provided for @profileCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'cancel pro?'**
+  String get profileCancelConfirmTitle;
+
+  /// No description provided for @profileCancelConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'pro frames lock again right away.'**
+  String get profileCancelConfirmBody;
+
+  /// No description provided for @profileCancelConfirmYes.
+  ///
+  /// In en, this message translates to:
+  /// **'yes, cancel'**
+  String get profileCancelConfirmYes;
+
+  /// No description provided for @profileCancelConfirmNo.
+  ///
+  /// In en, this message translates to:
+  /// **'keep pro'**
+  String get profileCancelConfirmNo;
 }
 
 class _AppLocalizationsDelegate

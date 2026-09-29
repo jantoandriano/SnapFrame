@@ -50,6 +50,28 @@ void main() {
     expect(find.byIcon(Icons.arrow_back_rounded), findsNothing);
   });
 
+  testWidgets('renders a trailing action and fires it', (tester) async {
+    var taps = 0;
+    await tester.pumpWidget(
+      wrapForTest(
+        SizedBox(
+          height: 72,
+          child: SnapAppBar(
+            title: 'Browse',
+            trailing: SnapSquareButton(
+              semanticLabel: 'open profile',
+              onPressed: () => taps++,
+              child: const Text('MA'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('MA'));
+    expect(taps, 1);
+  });
+
   testWidgets('back button pops the route', (tester) async {
     await tester.pumpWidget(_pushedApp());
     await tester.tap(find.text('open'));

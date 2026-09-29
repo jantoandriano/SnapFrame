@@ -5,11 +5,18 @@ import 'package:snapframe/core/utils/haptics.dart';
 
 /// The brutalist replacement for Material's `AppBar`: a solid [accent]
 /// color block with an ink bottom rule, an UPPERCASE title, and — when the
-/// route can pop — a square, hard-shadowed back button.
+/// route can pop — a square, hard-shadowed back button. [trailing] sits
+/// at the right edge (typically a [SnapSquareButton]).
 class SnapAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SnapAppBar({required this.title, this.accent, super.key});
+  const SnapAppBar({
+    required this.title,
+    this.accent,
+    this.trailing,
+    super.key,
+  });
 
   final String title;
+  final Widget? trailing;
 
   /// Fill for the whole bar; defaults to [SnapTokens.sun].
   final Color? accent;
@@ -40,7 +47,12 @@ class SnapAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Row(
               children: [
                 if (canPop) ...[
-                  const _BackButton(),
+                  SnapSquareButton(
+                    semanticLabel: MaterialLocalizations.of(context)
+                        .backButtonTooltip,
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    child: Icon(Icons.arrow_back_rounded, color: tokens.ink),
+                  ),
                   const SizedBox(width: SnapSpacing.md),
                 ],
                 Expanded(
@@ -57,6 +69,10 @@ class SnapAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                 ),
+                if (trailing != null) ...[
+                  const SizedBox(width: SnapSpacing.md),
+                  trailing!,
+                ],
               ],
             ),
           ),
@@ -66,27 +82,43 @@ class SnapAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _BackButton extends StatelessWidget {
-  const _BackButton();
+/// Square, ink-bordered, hard-shadowed tap target — the app bar's back
+/// button, and any bar action (e.g. the profile avatar on Browse).
+class SnapSquareButton extends StatelessWidget {
+  const SnapSquareButton({
+    required this.semanticLabel,
+    required this.onPressed,
+    required this.child,
+    this.color,
+    super.key,
+  });
+
+  final String semanticLabel;
+  final VoidCallback onPressed;
+  final Widget child;
+
+  /// Fill; defaults to [SnapTokens.surface].
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     return Semantics(
       button: true,
-      label: MaterialLocalizations.of(context).backButtonTooltip,
+      label: semanticLabel,
       excludeSemantics: true,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           Haptics.light();
-          Navigator.of(context).maybePop();
+          onPressed();
         },
         child: Container(
           width: 44,
           height: 44,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: tokens.surface,
+            color: color ?? tokens.surface,
             borderRadius: BorderRadius.circular(SnapRadius.sm),
             border: Border.all(
               color: tokens.ink,
@@ -94,7 +126,7 @@ class _BackButton extends StatelessWidget {
             ),
             boxShadow: [BoxShadow(color: tokens.ink, offset: SnapShadow.small)],
           ),
-          child: Icon(Icons.arrow_back_rounded, color: tokens.ink),
+          child: child,
         ),
       ),
     );

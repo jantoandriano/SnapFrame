@@ -145,4 +145,74 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorGeneric => 'oops, something flopped. try again?';
+
+  @override
+  String get profileTitle => 'profile';
+
+  @override
+  String get profileOpen => 'open profile';
+
+  @override
+  String profileMemberSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'member since $dateString';
+  }
+
+  @override
+  String get profileTierPro => 'PRO ✦';
+
+  @override
+  String get profileTierFree => 'FREE';
+
+  @override
+  String get profileThemeLabel => 'theme';
+
+  @override
+  String get profileThemeLight => 'light';
+
+  @override
+  String get profileThemeDark => 'dark';
+
+  @override
+  String get profileThemeSystem => 'system';
+
+  @override
+  String get profilePlanLabel => 'your plan';
+
+  @override
+  String get profilePerks => 'every pro frame, no locks, new drops first';
+
+  @override
+  String get profileSubscribe => 'go pro';
+
+  @override
+  String profileProUntil(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'pro until $dateString';
+  }
+
+  @override
+  String get profileUnsubscribe => 'cancel pro';
+
+  @override
+  String get profileSubscribedSnack => 'you\'re pro now ✦';
+
+  @override
+  String get profileCancelledSnack => 'pro cancelled. back to free';
+
+  @override
+  String get profileCancelConfirmTitle => 'cancel pro?';
+
+  @override
+  String get profileCancelConfirmBody => 'pro frames lock again right away.';
+
+  @override
+  String get profileCancelConfirmYes => 'yes, cancel';
+
+  @override
+  String get profileCancelConfirmNo => 'keep pro';
 }
