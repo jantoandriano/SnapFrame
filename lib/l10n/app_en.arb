@@ -66,6 +66,7 @@
   "errorGeneric": "oops, something flopped. try again?",
   "profileTitle": "profile",
   "profileOpen": "open profile",
+  "profileSignedOut": "you're signed out",
   "profileMemberSince": "member since {date}",
   "@profileMemberSince": {
     "placeholders": {

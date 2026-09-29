@@ -15,7 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- AppUser? get user; bool get isUpdatingPlan; ProfileEffect? get effect;
+ AppUser? get user;/// True only until the user stream first answers. Once it has, a null
+/// [user] means signed out — not "still loading".
+ bool get isLoadingUser; bool get isUpdatingPlan; ProfileEffect? get effect;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +29,20 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 @override
 bool operator ==(Object other) {
   final _this = this as ProfileState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.isUpdatingPlan, _this.isUpdatingPlan) || other.isUpdatingPlan == _this.isUpdatingPlan)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.isLoadingUser, _this.isLoadingUser) || other.isLoadingUser == _this.isLoadingUser)&&(identical(other.isUpdatingPlan, _this.isUpdatingPlan) || other.isUpdatingPlan == _this.isUpdatingPlan)&&(identical(other.effect, _this.effect) || other.effect == _this.effect));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ProfileState;
-  return Object.hash(runtimeType,_this.user,_this.isUpdatingPlan,_this.effect);
+  return Object.hash(runtimeType,_this.user,_this.isLoadingUser,_this.isUpdatingPlan,_this.effect);
 }
 
 @override
 String toString() {
   final _this = this as ProfileState;
-  return 'ProfileState(user: ${_this.user}, isUpdatingPlan: ${_this.isUpdatingPlan}, effect: ${_this.effect})';
+  return 'ProfileState(user: ${_this.user}, isLoadingUser: ${_this.isLoadingUser}, isUpdatingPlan: ${_this.isUpdatingPlan}, effect: ${_this.effect})';
 }
 
 
@@ -51,7 +53,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- AppUser? user, bool isUpdatingPlan, ProfileEffect? effect
+ AppUser? user, bool isLoadingUser, bool isUpdatingPlan, ProfileEffect? effect
 });
 
 
@@ -68,10 +70,11 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? isUpdatingPlan = null,Object? effect = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? isLoadingUser = null,Object? isUpdatingPlan = null,Object? effect = freezed,}) {
   return _then(ProfileState(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as AppUser?,isUpdatingPlan: null == isUpdatingPlan ? _self.isUpdatingPlan : isUpdatingPlan // ignore: cast_nullable_to_non_nullable
+as AppUser?,isLoadingUser: null == isLoadingUser ? _self.isLoadingUser : isLoadingUser // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingPlan: null == isUpdatingPlan ? _self.isUpdatingPlan : isUpdatingPlan // ignore: cast_nullable_to_non_nullable
 as bool,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
 as ProfileEffect?,
   ));
@@ -170,10 +173,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppUser? user,  bool isUpdatingPlan,  ProfileEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppUser? user,  bool isLoadingUser,  bool isUpdatingPlan,  ProfileEffect? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
+return $default(_that.user,_that.isLoadingUser,_that.isUpdatingPlan,_that.effect);case _:
   return orElse();
 
 }
@@ -191,10 +194,10 @@ return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppUser? user,  bool isUpdatingPlan,  ProfileEffect? effect)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppUser? user,  bool isLoadingUser,  bool isUpdatingPlan,  ProfileEffect? effect)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
+return $default(_that.user,_that.isLoadingUser,_that.isUpdatingPlan,_that.effect);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +214,10 @@ return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppUser? user,  bool isUpdatingPlan,  ProfileEffect? effect)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppUser? user,  bool isLoadingUser,  bool isUpdatingPlan,  ProfileEffect? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
+return $default(_that.user,_that.isLoadingUser,_that.isUpdatingPlan,_that.effect);case _:
   return null;
 
 }
@@ -226,10 +229,13 @@ return $default(_that.user,_that.isUpdatingPlan,_that.effect);case _:
 
 
 class _ProfileState implements ProfileState {
-  const _ProfileState({this.user, this.isUpdatingPlan = false, this.effect});
+  const _ProfileState({this.user, this.isLoadingUser = true, this.isUpdatingPlan = false, this.effect});
   
 
 @override final  AppUser? user;
+/// True only until the user stream first answers. Once it has, a null
+/// [user] means signed out — not "still loading".
+@override@JsonKey() final  bool isLoadingUser;
 @override@JsonKey() final  bool isUpdatingPlan;
 @override final  ProfileEffect? effect;
 
@@ -243,18 +249,18 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.user, user) || other.user == user)&&(identical(other.isUpdatingPlan, isUpdatingPlan) || other.isUpdatingPlan == isUpdatingPlan)&&(identical(other.effect, effect) || other.effect == effect));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.user, user) || other.user == user)&&(identical(other.isLoadingUser, isLoadingUser) || other.isLoadingUser == isLoadingUser)&&(identical(other.isUpdatingPlan, isUpdatingPlan) || other.isUpdatingPlan == isUpdatingPlan)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,user,isUpdatingPlan,effect);
+    return Object.hash(runtimeType,user,isLoadingUser,isUpdatingPlan,effect);
 }
 
 @override
 String toString() {
-    return 'ProfileState(user: $user, isUpdatingPlan: $isUpdatingPlan, effect: $effect)';
+    return 'ProfileState(user: $user, isLoadingUser: $isLoadingUser, isUpdatingPlan: $isUpdatingPlan, effect: $effect)';
 }
 
 
@@ -265,7 +271,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- AppUser? user, bool isUpdatingPlan, ProfileEffect? effect
+ AppUser? user, bool isLoadingUser, bool isUpdatingPlan, ProfileEffect? effect
 });
 
 
@@ -282,10 +288,11 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? isUpdatingPlan = null,Object? effect = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? isLoadingUser = null,Object? isUpdatingPlan = null,Object? effect = freezed,}) {
   return _then(_ProfileState(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as AppUser?,isUpdatingPlan: null == isUpdatingPlan ? _self.isUpdatingPlan : isUpdatingPlan // ignore: cast_nullable_to_non_nullable
+as AppUser?,isLoadingUser: null == isLoadingUser ? _self.isLoadingUser : isLoadingUser // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingPlan: null == isUpdatingPlan ? _self.isUpdatingPlan : isUpdatingPlan // ignore: cast_nullable_to_non_nullable
 as bool,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
 as ProfileEffect?,
   ));

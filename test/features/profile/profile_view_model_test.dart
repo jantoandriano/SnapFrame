@@ -55,6 +55,32 @@ void main() {
     expect(container.read(profileViewModelProvider).user, _user);
   });
 
+  test('is loading while the user stream has not answered', () async {
+    final silentAuth = _MockAuthRepository();
+    when(() => silentAuth.currentUser)
+        .thenAnswer((_) => StreamController<AppUser?>().stream);
+    final fresh = ProviderContainer(
+      overrides: [authRepositoryProvider.overrideWithValue(silentAuth)],
+    );
+    addTearDown(fresh.dispose);
+    fresh.listen(profileViewModelProvider, (_, _) {});
+    await Future<void>.delayed(Duration.zero);
+
+    final state = fresh.read(profileViewModelProvider);
+    expect(state.user, isNull);
+    expect(state.isLoadingUser, isTrue);
+  });
+
+  test('a signed-out stream is not treated as loading', () async {
+    when(() => authRepo.currentUser).thenAnswer((_) => Stream.value(null));
+    container.invalidate(currentUserStreamProvider);
+    await Future<void>.delayed(Duration.zero);
+
+    final state = container.read(profileViewModelProvider);
+    expect(state.user, isNull);
+    expect(state.isLoadingUser, isFalse);
+  });
+
   test('subscribing shows progress, then a success effect', () async {
     final pending = Completer<Result<void>>();
     when(() => subRepo.subscribeToPro()).thenAnswer((_) => pending.future);

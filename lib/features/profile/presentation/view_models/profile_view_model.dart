@@ -15,9 +15,10 @@ class ProfileViewModel extends _$ProfileViewModel {
     // rebuild would reset the state and drop the success effect that the
     // same change is about to set.
     ref.listen(currentUserStreamProvider, (_, next) {
-      state = state.copyWith(user: next.value);
+      state = state.copyWith(user: next.value, isLoadingUser: !next.hasValue);
     });
-    return ProfileState(user: ref.read(currentUserStreamProvider).value);
+    final user = ref.read(currentUserStreamProvider);
+    return ProfileState(user: user.value, isLoadingUser: !user.hasValue);
   }
 
   Future<void> onSubscribePressed() => _changePlan(

@@ -153,6 +153,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileOpen => 'open profile';
 
   @override
+  String get profileSignedOut => 'you\'re signed out';
+
+  @override
   String profileMemberSince(DateTime date) {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
     final String dateString = dateDateFormat.format(date);

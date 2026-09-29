@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:snapframe/app/theme_mode_controller.dart';
 import 'package:snapframe/core/result/result.dart';
 import 'package:snapframe/core/theme/app_theme.dart';
+import 'package:snapframe/core/widgets/widgets.dart';
 import 'package:snapframe/features/auth/data/auth_providers.dart';
 import 'package:snapframe/features/auth/domain/app_user.dart';
 import 'package:snapframe/features/auth/domain/auth_repository.dart';
@@ -33,7 +34,7 @@ void main() {
   late _MockSubscriptionRepository subRepo;
   late ProviderContainer container;
 
-  Future<void> pumpProfile(WidgetTester tester, AppUser user) async {
+  Future<void> pumpProfile(WidgetTester tester, AppUser? user) async {
     authRepo = _MockAuthRepository();
     subRepo = _MockSubscriptionRepository();
     when(() => authRepo.currentUser).thenAnswer((_) => Stream.value(user));
@@ -129,6 +130,15 @@ void main() {
     await tester.pumpAndSettle();
 
     verifyNever(() => subRepo.cancelPro());
+  });
+
+  testWidgets('signed out shows a sign-in prompt, not an endless loader', (
+    tester,
+  ) async {
+    await pumpProfile(tester, null);
+
+    expect(find.byType(LoadingBlob), findsNothing);
+    expect(find.text('SIGN IN'), findsOneWidget);
   });
 
   testWidgets('the theme toggle switches the app theme mode', (tester) async {

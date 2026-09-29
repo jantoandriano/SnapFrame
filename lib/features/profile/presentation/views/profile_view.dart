@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:snapframe/app/router.dart';
 import 'package:snapframe/app/theme_mode_controller.dart';
 import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
@@ -65,7 +66,11 @@ class ProfileView extends ConsumerWidget {
     return Scaffold(
       appBar: SnapAppBar(title: l10n.profileTitle, accent: tokens.pink),
       body: user == null
-          ? const Center(child: LoadingBlob())
+          ? state.isLoadingUser
+                ? const Center(child: LoadingBlob())
+                // Signed out — e.g. the web page was refreshed on /profile
+                // and the in-memory session is gone.
+                : _SignedOut(onSignIn: () => const LoginRoute().go(context))
           : ListView(
               padding: const EdgeInsets.all(SnapSpacing.lg),
               children: [
@@ -141,6 +146,34 @@ class ProfileView extends ConsumerWidget {
       ),
     );
     if (confirmed ?? false) await notifier.onCancelConfirmed();
+  }
+}
+
+class _SignedOut extends StatelessWidget {
+  const _SignedOut({required this.onSignIn});
+
+  final VoidCallback onSignIn;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(SnapSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              l10n.profileSignedOut.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: SnapSpacing.lg),
+            ChunkyButton(label: l10n.loginSignInButton, onPressed: onSignIn),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -8,6 +8,10 @@ part 'profile_state.freezed.dart';
 abstract class ProfileState with _$ProfileState {
   const factory ProfileState({
     AppUser? user,
+
+    /// True only until the user stream first answers. Once it has, a null
+    /// [user] means signed out — not "still loading".
+    @Default(true) bool isLoadingUser,
     @Default(false) bool isUpdatingPlan,
     ProfileEffect? effect,
   }) = _ProfileState;
