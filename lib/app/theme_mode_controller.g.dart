@@ -8,12 +8,18 @@ part of 'theme_mode_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The Light / Dark / System choice from the profile screen, saved so it
+/// survives restarts. Stored as the [ThemeMode] name.
 
 @ProviderFor(ThemeModeController)
 final themeModeControllerProvider = ThemeModeControllerProvider._();
 
+/// The Light / Dark / System choice from the profile screen, saved so it
+/// survives restarts. Stored as the [ThemeMode] name.
 final class ThemeModeControllerProvider
     extends $NotifierProvider<ThemeModeController, ThemeMode> {
+  /// The Light / Dark / System choice from the profile screen, saved so it
+  /// survives restarts. Stored as the [ThemeMode] name.
   ThemeModeControllerProvider._()
     : super(
         from: null,
@@ -42,7 +48,10 @@ final class ThemeModeControllerProvider
 }
 
 String _$themeModeControllerHash() =>
-    r'c9b61d4e3becf845a3017e2bc6dc5ade14685335';
+    r'5d5070e1139cb0fc0ee6df03612627bc4aafb07e';
+
+/// The Light / Dark / System choice from the profile screen, saved so it
+/// survives restarts. Stored as the [ThemeMode] name.
 
 abstract class _$ThemeModeController extends $Notifier<ThemeMode> {
   ThemeMode build();

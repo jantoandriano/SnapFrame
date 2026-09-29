@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/misc.dart' show Override;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snapframe/app/preferences.dart';
 import 'package:snapframe/core/theme/app_theme.dart';
 
 /// `flutter test` renders text with a tofu fallback font unless the real
@@ -35,5 +37,16 @@ Widget wrapWithProviders(
   return ProviderScope(
     overrides: overrides,
     child: wrapForTest(child, brightness: brightness),
+  );
+}
+
+/// Overrides [sharedPreferencesProvider] with an in-memory store (what
+/// `bootstrap()` does with the real one), seeded with [values].
+Future<Override> mockPrefsOverride([
+  Map<String, Object> values = const {},
+]) async {
+  SharedPreferences.setMockInitialValues(values);
+  return sharedPreferencesProvider.overrideWithValue(
+    await SharedPreferences.getInstance(),
   );
 }

@@ -14,7 +14,12 @@ void main() {
   testWidgets('boots to splash, then routes to login when signed out', (
     tester,
   ) async {
-    await tester.pumpWidget(const ProviderScope(child: SnapApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [await mockPrefsOverride()],
+        child: const SnapApp(),
+      ),
+    );
     // The splash/browse screens have looping animations (LoadingBlob), so
     // a bounded pump is used instead of `pumpAndSettle`, which would never
     // return.
@@ -27,7 +32,7 @@ void main() {
   testWidgets('a signed-out deep link to a protected page lands on login', (
     tester,
   ) async {
-    final container = ProviderContainer();
+    final container = ProviderContainer(overrides: [await mockPrefsOverride()]);
     addTearDown(container.dispose);
     await tester.pumpWidget(
       UncontrolledProviderScope(container: container, child: const SnapApp()),
@@ -44,7 +49,7 @@ void main() {
   testWidgets('a page opened without its passed-in data falls back home', (
     tester,
   ) async {
-    final container = ProviderContainer();
+    final container = ProviderContainer(overrides: [await mockPrefsOverride()]);
     addTearDown(container.dispose);
     await tester.pumpWidget(
       UncontrolledProviderScope(container: container, child: const SnapApp()),
@@ -68,7 +73,7 @@ void main() {
   });
 
   testWidgets('signing out on profile lands on login', (tester) async {
-    final container = ProviderContainer();
+    final container = ProviderContainer(overrides: [await mockPrefsOverride()]);
     addTearDown(container.dispose);
     await tester.pumpWidget(
       UncontrolledProviderScope(container: container, child: const SnapApp()),

@@ -15,6 +15,8 @@ import 'package:snapframe/features/profile/domain/subscription_repository.dart';
 import 'package:snapframe/features/profile/presentation/views/profile_view.dart';
 import 'package:snapframe/l10n/app_localizations.dart';
 
+import '../../golden_helpers.dart';
+
 class _MockAuthRepository extends Mock implements AuthRepository {}
 
 class _MockSubscriptionRepository extends Mock
@@ -42,6 +44,7 @@ void main() {
       overrides: [
         authRepositoryProvider.overrideWithValue(authRepo),
         subscriptionRepositoryProvider.overrideWithValue(subRepo),
+        await mockPrefsOverride(),
       ],
     );
     addTearDown(container.dispose);
