@@ -18,9 +18,8 @@ Widget _pushedApp({Brightness brightness = Brightness.light}) {
           child: TextButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => const Scaffold(
-                  appBar: SnapAppBar(title: 'Browse frames'),
-                ),
+                builder: (_) =>
+                    const Scaffold(appBar: SnapAppBar(title: 'Browse frames')),
               ),
             ),
             child: const Text('open'),
@@ -39,10 +38,7 @@ void main() {
   ) async {
     await tester.pumpWidget(
       wrapForTest(
-        const SizedBox(
-          height: 72,
-          child: SnapAppBar(title: 'Browse frames'),
-        ),
+        const SizedBox(height: 72, child: SnapAppBar(title: 'Browse frames')),
       ),
     );
 
