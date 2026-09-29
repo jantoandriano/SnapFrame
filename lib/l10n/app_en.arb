@@ -67,6 +67,7 @@
   "profileTitle": "profile",
   "profileOpen": "open profile",
   "profileSignedOut": "you're signed out",
+  "profileSignOut": "sign out",
   "profileMemberSince": "member since {date}",
   "@profileMemberSince": {
     "placeholders": {

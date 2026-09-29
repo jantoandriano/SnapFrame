@@ -141,6 +141,18 @@ void main() {
     expect(find.text('SIGN IN'), findsOneWidget);
   });
 
+  testWidgets('has a sign-out button', (tester) async {
+    await pumpProfile(tester, _user());
+    when(() => authRepo.signOut())
+        .thenAnswer((_) async => const Result.success(null));
+
+    await tester.scrollUntilVisible(find.text('SIGN OUT'), 200);
+    await tester.tap(find.text('SIGN OUT'));
+    await tester.pump();
+
+    verify(() => authRepo.signOut()).called(1);
+  });
+
   testWidgets('the theme toggle switches the app theme mode', (tester) async {
     await pumpProfile(tester, _user());
     expect(container.read(themeModeControllerProvider), ThemeMode.system);

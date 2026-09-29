@@ -36,6 +36,17 @@ class ProfileViewModel extends _$ProfileViewModel {
     const CancelledEffect(),
   );
 
+  /// No navigation here: the router's session guard sends the user to
+  /// login as soon as the session goes null.
+  Future<void> onSignOutPressed() async {
+    final result = await ref.read(authRepositoryProvider).signOut();
+    result.when(
+      success: (_) {},
+      failure: (e) =>
+          state = state.copyWith(effect: PlanFailedEffect(e.message)),
+    );
+  }
+
   Future<void> _changePlan(
     Future<Result<void>> Function() change,
     ProfileEffect onSuccess,

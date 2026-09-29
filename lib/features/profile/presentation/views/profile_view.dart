@@ -101,6 +101,14 @@ class ProfileView extends ConsumerWidget {
                   onSubscribe: notifier.onSubscribePressed,
                   onCancel: notifier.onCancelPressed,
                 ),
+                const SizedBox(height: SnapSpacing.xxxl),
+                ChunkyButton(
+                  label: l10n.profileSignOut,
+                  variant: SnapButtonVariant.ghost,
+                  icon: Icons.logout_rounded,
+                  onPressed: notifier.onSignOutPressed,
+                ),
+                const SizedBox(height: SnapSpacing.xl),
               ],
             ),
     );

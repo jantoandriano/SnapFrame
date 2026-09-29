@@ -66,4 +66,30 @@ void main() {
 
     expect(find.text('BROWSE'), findsOneWidget);
   });
+
+  testWidgets('signing out on profile lands on login', (tester) async {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    await tester.pumpWidget(
+      UncontrolledProviderScope(container: container, child: const SnapApp()),
+    );
+    await tester.pump();
+    unawaited(
+      container
+          .read(authRepositoryProvider)
+          .signInWithEmail('maya@example.com', 'whatever'),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    container.read(goRouterProvider).go('/profile');
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.scrollUntilVisible(find.text('SIGN OUT'), 200);
+    await tester.tap(find.text('SIGN OUT'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text("LET'S GET SNAPPY ✦"), findsOneWidget);
+  });
 }

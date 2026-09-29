@@ -364,6 +364,12 @@ abstract class AppLocalizations {
   /// **'you\'re signed out'**
   String get profileSignedOut;
 
+  /// No description provided for @profileSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'sign out'**
+  String get profileSignOut;
+
   /// No description provided for @profileMemberSince.
   ///
   /// In en, this message translates to:

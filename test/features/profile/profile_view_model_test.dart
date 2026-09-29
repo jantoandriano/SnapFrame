@@ -138,6 +138,15 @@ void main() {
     );
   });
 
+  test('signing out ends the session', () async {
+    when(() => authRepo.signOut())
+        .thenAnswer((_) async => const Result.success(null));
+
+    await notifier().onSignOutPressed();
+
+    verify(() => authRepo.signOut()).called(1);
+  });
+
   test('ignores a second tap while a plan change is in flight', () async {
     final pending = Completer<Result<void>>();
     when(() => subRepo.subscribeToPro()).thenAnswer((_) => pending.future);
