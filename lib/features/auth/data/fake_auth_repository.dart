@@ -56,6 +56,17 @@ class FakeAuthRepository implements AuthRepository {
     return const Result.success(null);
   }
 
+  /// Changes the signed-in user's tier in place — the hook the fake
+  /// subscription flow uses. Fake-only: with a real backend the tier comes
+  /// from the store's entitlement, not from the client. Returns `false`
+  /// (and does nothing) when signed out.
+  bool setTier(Tier tier, {DateTime? proExpiresAt}) {
+    final current = _current;
+    if (current == null) return false;
+    _setCurrent(current.copyWith(tier: tier, proExpiresAt: proExpiresAt));
+    return true;
+  }
+
   Future<Result<void>> _signInAs(String email, String displayName) async {
     await Future<void>.delayed(const Duration(milliseconds: 400));
     _setCurrent(

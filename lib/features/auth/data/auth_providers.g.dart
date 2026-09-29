@@ -8,26 +8,82 @@ part of 'auth_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// `keepAlive: true` — this holds the fake in-memory "session", so it must
+/// `keepAlive: true` — these hold the fake in-memory "session", so it must
 /// survive between screens regardless of who's currently watching it.
 /// Autodispose would drop the signed-in user the moment nothing was
 /// listening for a moment during navigation.
+
+@ProviderFor(fakeAuthRepository)
+final fakeAuthRepositoryProvider = FakeAuthRepositoryProvider._();
+
+/// `keepAlive: true` — these hold the fake in-memory "session", so it must
+/// survive between screens regardless of who's currently watching it.
+/// Autodispose would drop the signed-in user the moment nothing was
+/// listening for a moment during navigation.
+
+final class FakeAuthRepositoryProvider
+    extends
+        $FunctionalProvider<
+          FakeAuthRepository,
+          FakeAuthRepository,
+          FakeAuthRepository
+        >
+    with $Provider<FakeAuthRepository> {
+  /// `keepAlive: true` — these hold the fake in-memory "session", so it must
+  /// survive between screens regardless of who's currently watching it.
+  /// Autodispose would drop the signed-in user the moment nothing was
+  /// listening for a moment during navigation.
+  FakeAuthRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'fakeAuthRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$fakeAuthRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<FakeAuthRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FakeAuthRepository create(Ref ref) {
+    return fakeAuthRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FakeAuthRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FakeAuthRepository>(value),
+    );
+  }
+}
+
+String _$fakeAuthRepositoryHash() =>
+    r'36688a0ae22bec947915e773ef60709423e8d18d';
+
+/// Backed by the same [fakeAuthRepository] instance the fake subscription
+/// flow writes to, so a tier change reaches everyone watching the user.
 
 @ProviderFor(authRepository)
 final authRepositoryProvider = AuthRepositoryProvider._();
 
-/// `keepAlive: true` — this holds the fake in-memory "session", so it must
-/// survive between screens regardless of who's currently watching it.
-/// Autodispose would drop the signed-in user the moment nothing was
-/// listening for a moment during navigation.
+/// Backed by the same [fakeAuthRepository] instance the fake subscription
+/// flow writes to, so a tier change reaches everyone watching the user.
 
 final class AuthRepositoryProvider
     extends $FunctionalProvider<AuthRepository, AuthRepository, AuthRepository>
     with $Provider<AuthRepository> {
-  /// `keepAlive: true` — this holds the fake in-memory "session", so it must
-  /// survive between screens regardless of who's currently watching it.
-  /// Autodispose would drop the signed-in user the moment nothing was
-  /// listening for a moment during navigation.
+  /// Backed by the same [fakeAuthRepository] instance the fake subscription
+  /// flow writes to, so a tier change reaches everyone watching the user.
   AuthRepositoryProvider._()
     : super(
         from: null,
@@ -61,7 +117,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'a94a1cbc137adecf85b92722132bef35783d5df2';
+String _$authRepositoryHash() => r'6ceebed9c2c0d3b5e1b7cb9c8f7d7c4ff48ec4cb';
 
 @ProviderFor(currentUserStream)
 final currentUserStreamProvider = CurrentUserStreamProvider._();

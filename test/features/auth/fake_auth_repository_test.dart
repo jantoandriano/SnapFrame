@@ -33,4 +33,25 @@ void main() {
     final user = await repo.currentUser.first;
     expect(user!.tier, Tier.free);
   });
+
+  test('setTier updates the signed-in user', () async {
+    final repo = FakeAuthRepository();
+    await repo.signInWithEmail('maya@example.com', 'whatever');
+    final expiry = DateTime(2026, 10, 29);
+
+    final applied = repo.setTier(Tier.pro, proExpiresAt: expiry);
+
+    expect(applied, isTrue);
+    final user = await repo.currentUser.first;
+    expect(user!.tier, Tier.pro);
+    expect(user.proExpiresAt, expiry);
+    expect(user.email, 'maya@example.com');
+  });
+
+  test('setTier is a no-op when signed out', () async {
+    final repo = FakeAuthRepository();
+
+    expect(repo.setTier(Tier.pro), isFalse);
+    expect(await repo.currentUser.first, isNull);
+  });
 }
