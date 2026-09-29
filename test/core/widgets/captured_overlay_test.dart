@@ -18,7 +18,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.byKey(const Key('photo')), findsOneWidget);
-    expect(find.text('got it!'), findsOneWidget);
+    expect(find.text('GOT IT!'), findsOneWidget);
 
     await tester.pumpAndSettle();
   });
@@ -33,7 +33,7 @@ void main() {
       ),
     );
 
-    expect(find.text('got it!'), findsOneWidget);
+    expect(find.text('GOT IT!'), findsOneWidget);
     // Nothing scheduled — no animation to settle.
     expect(tester.hasRunningAnimations, isFalse);
   });

@@ -27,6 +27,40 @@ abstract final class SnapAppTheme {
         onSurface: tokens.ink,
       ),
       dividerColor: tokens.ink,
+      // Anything still using stock Material chrome gets squared off and
+      // ink-ruled so it doesn't break the brutalist look.
+      appBarTheme: AppBarTheme(
+        backgroundColor: tokens.bg,
+        foregroundColor: tokens.ink,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        titleTextStyle: textTheme.headlineMedium,
+        iconTheme: IconThemeData(color: tokens.ink),
+        shape: Border(
+          bottom: BorderSide(color: tokens.ink, width: SnapTokens.borderWidth),
+        ),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: tokens.ink,
+        linearTrackColor: tokens.lime,
+        circularTrackColor: tokens.lime,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: tokens.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(SnapRadius.md),
+          side: BorderSide(color: tokens.ink, width: SnapTokens.borderWidth),
+        ),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: tokens.surface,
+        elevation: 0,
+        shape: Border(
+          top: BorderSide(color: tokens.ink, width: SnapTokens.borderWidth),
+        ),
+      ),
       splashFactory: NoSplash.splashFactory,
       highlightColor: Colors.transparent,
       extensions: <ThemeExtension<dynamic>>[tokens],

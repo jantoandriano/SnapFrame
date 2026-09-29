@@ -9,11 +9,11 @@ class StickerBadge extends StatelessWidget {
   const StickerBadge({
     required this.label,
     this.color,
-    this.rotationDeg = -4,
+    this.rotationDeg = -6,
     super.key,
   }) : assert(
-         rotationDeg >= -4 && rotationDeg <= 4,
-         'keep the sticker tilt within the -4..4 degree range',
+         rotationDeg >= -8 && rotationDeg <= 8,
+         'keep the sticker tilt within the -8..8 degree range',
        );
 
   final String label;
@@ -32,14 +32,17 @@ class StickerBadge extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: color ?? tokens.sun,
-          borderRadius: BorderRadius.circular(SnapRadius.pill),
-          border: Border.all(color: tokens.ink, width: SnapTokens.borderWidth),
-          boxShadow: [BoxShadow(color: tokens.ink, offset: const Offset(2, 2))],
+          borderRadius: BorderRadius.circular(SnapRadius.sm),
+          border: Border.all(
+            color: tokens.ink,
+            width: SnapTokens.borderWidthThin,
+          ),
+          boxShadow: [BoxShadow(color: tokens.ink, offset: SnapShadow.small)],
         ),
         child: Text(
-          label,
+          label.toUpperCase(),
           style: Theme.of(context).textTheme.labelSmall
-              ?.copyWith(color: tokens.ink, fontWeight: FontWeight.w700),
+              ?.copyWith(color: tokens.ink, fontWeight: FontWeight.w800),
         ),
       ),
     );

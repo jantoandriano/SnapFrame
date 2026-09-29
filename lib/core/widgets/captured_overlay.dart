@@ -29,7 +29,7 @@ class CapturedOverlay extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Transform.rotate(
-          angle: -3 * math.pi / 180,
+          angle: -4 * math.pi / 180,
           child: Container(
             padding: const EdgeInsets.fromLTRB(
               SnapSpacing.sm,
@@ -44,7 +44,7 @@ class CapturedOverlay extends StatelessWidget {
                 width: SnapTokens.borderWidth,
               ),
               boxShadow: [
-                BoxShadow(color: tokens.ink, offset: SnapShadow.offset),
+                BoxShadow(color: tokens.ink, offset: SnapShadow.large),
               ],
             ),
             child: SizedBox(width: 180, height: 220, child: photo),

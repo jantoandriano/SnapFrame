@@ -61,7 +61,11 @@ class SnapTokens extends ThemeExtension<SnapTokens> {
     error: Color(0xFFFF3B3B),
   );
 
-  static const double borderWidth = 2.5;
+  static const double borderWidth = 3.5;
+
+  /// For small elements (stickers, loading dots) where the full border
+  /// would swallow the fill.
+  static const double borderWidthThin = 2.5;
 
   @override
   SnapTokens copyWith({
@@ -111,19 +115,26 @@ class SnapTokens extends ThemeExtension<SnapTokens> {
   }
 }
 
+/// Hard-edged on purpose: just enough rounding to soften aliasing, never
+/// enough to read as "rounded".
 abstract final class SnapRadius {
-  static const double sm = 12;
-  static const double md = 20;
-  static const double lg = 28;
-  static const double pill = 999;
+  static const double sm = 2;
+  static const double md = 4;
+  static const double lg = 6;
 }
 
 /// Hard offset shadow, no blur. Pressed state collapses the offset to zero
 /// while the widget itself translates by [offset], so a button looks like
 /// it physically sinks onto the canvas.
 abstract final class SnapShadow {
-  static const Offset offset = Offset(4, 4);
+  static const Offset offset = Offset(6, 6);
   static const Offset pressedOffset = Offset.zero;
+
+  /// Stickers, chips, selected tabs, focused fields.
+  static const Offset small = Offset(3, 3);
+
+  /// Hero images: the result photo and the frame detail preview.
+  static const Offset large = Offset(10, 10);
 }
 
 abstract final class SnapSpacing {

@@ -60,9 +60,9 @@ class _StateScaffold extends StatelessWidget {
             Text(emoji, style: const TextStyle(fontSize: 56)),
             const SizedBox(height: SnapSpacing.md),
             Text(
-              message,
+              message.toUpperCase(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             if (action != null) ...[
               const SizedBox(height: SnapSpacing.lg),

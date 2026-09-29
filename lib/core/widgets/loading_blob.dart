@@ -30,8 +30,11 @@ class LoadingBlob extends StatelessWidget {
         height: dotSize,
         decoration: BoxDecoration(
           color: colors[index],
-          border: Border.all(color: tokens.ink, width: SnapTokens.borderWidth),
-          borderRadius: BorderRadius.circular(dotSize * 0.3),
+          border: Border.all(
+            color: tokens.ink,
+            width: SnapTokens.borderWidthThin,
+          ),
+          borderRadius: BorderRadius.circular(SnapRadius.sm),
         ),
       );
 

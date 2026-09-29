@@ -22,7 +22,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('trigger'));
+    await tester.tap(find.text('TRIGGER'));
     await tester.pump();
 
     expect(find.text('ate. 💅'), findsOneWidget);

@@ -7,7 +7,7 @@ import '../../golden_helpers.dart';
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('rejects a rotation outside -4..4 degrees', (tester) async {
+  testWidgets('rejects a rotation outside -8..8 degrees', (tester) async {
     expect(
       () => StickerBadge(label: 'PRO ✦', rotationDeg: 10),
       throwsAssertionError,

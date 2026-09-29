@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 
-/// A bordered text field whose border turns pink on focus.
+/// A bordered text field that lifts on focus: pink border, lime-tinted
+/// fill and a small hard shadow.
 class BrutalTextField extends StatefulWidget {
   const BrutalTextField({
     this.controller,
@@ -62,7 +63,7 @@ class _BrutalTextFieldState extends State<BrutalTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
-          Text(widget.label!, style: textTheme.labelLarge),
+          Text(widget.label!.toUpperCase(), style: textTheme.labelMedium),
           const SizedBox(height: SnapSpacing.xs),
         ],
         AnimatedContainer(
@@ -70,12 +71,20 @@ class _BrutalTextFieldState extends State<BrutalTextField> {
           constraints: const BoxConstraints(minHeight: 48),
           padding: const EdgeInsets.symmetric(horizontal: SnapSpacing.md),
           decoration: BoxDecoration(
-            color: tokens.surface,
+            color: _focusNode.hasFocus
+                ? Color.alphaBlend(
+                    tokens.lime.withValues(alpha: 0.18),
+                    tokens.surface,
+                  )
+                : tokens.surface,
             borderRadius: BorderRadius.circular(SnapRadius.sm),
             border: Border.all(
               color: borderColor,
               width: SnapTokens.borderWidth,
             ),
+            boxShadow: _focusNode.hasFocus || hasError
+                ? [BoxShadow(color: borderColor, offset: SnapShadow.small)]
+                : const [],
           ),
           child: TextField(
             controller: widget.controller,

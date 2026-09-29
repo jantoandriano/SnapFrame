@@ -19,7 +19,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('Community'));
+    await tester.tap(find.text('COMMUNITY'));
     expect(selected, 1);
   });
 
@@ -31,7 +31,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('Newest'));
+    await tester.tap(find.text('NEWEST'));
     expect(tapped, isTrue);
   });
 

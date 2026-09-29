@@ -7,6 +7,7 @@ export 'frame_card.dart';
 export 'loading_blob.dart';
 export 'pill_tab_bar.dart';
 export 'slot_strip.dart';
+export 'snap_app_bar.dart';
 export 'snap_snack.dart';
 export 'sticker_badge.dart';
 export 'xfile_image.dart';

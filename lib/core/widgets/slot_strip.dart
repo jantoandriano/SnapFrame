@@ -55,7 +55,8 @@ class _Slot extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final reduceMotion = MediaQuery.of(context).disableAnimations;
-    final borderColor = isCurrent || isHighlighted ? tokens.lime : tokens.ink;
+    final active = isCurrent || isHighlighted;
+    final borderColor = active ? tokens.lime : tokens.ink;
 
     Widget box = Container(
       width: 48,
@@ -65,6 +66,9 @@ class _Slot extends StatelessWidget {
         color: tokens.surface,
         borderRadius: BorderRadius.circular(SnapRadius.sm),
         border: Border.all(color: borderColor, width: SnapTokens.borderWidth),
+        boxShadow: active
+            ? [BoxShadow(color: tokens.ink, offset: SnapShadow.small)]
+            : const [],
       ),
       child: thumbnail,
     );

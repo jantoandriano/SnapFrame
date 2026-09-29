@@ -14,7 +14,7 @@ void main() {
       wrapForTest(ChunkyButton(label: 'go', onPressed: () => tapped = true)),
     );
 
-    await tester.tap(find.text('go'));
+    await tester.tap(find.text('GO'));
     await tester.pump();
 
     expect(tapped, isTrue);
@@ -44,7 +44,7 @@ void main() {
     // Lets flutter_animate's start timer fire.
     await tester.pump(const Duration(milliseconds: 16));
     expect(find.byType(LoadingBlob), findsOneWidget);
-    await tester.tap(find.text('saving'));
+    await tester.tap(find.text('SAVING'));
     await tester.pump();
     expect(tapped, isFalse);
   });

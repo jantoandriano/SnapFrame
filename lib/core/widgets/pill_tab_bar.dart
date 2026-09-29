@@ -3,7 +3,8 @@ import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/utils/haptics.dart';
 
-/// A segmented tab bar (e.g. Official / Community) rendered as one pill.
+/// A segmented tab bar (e.g. Official / Community) rendered as one
+/// ink-bordered strip; the selected segment pops out as a lime block.
 class PillTabBar extends StatelessWidget {
   const PillTabBar({
     required this.tabs,
@@ -23,7 +24,7 @@ class PillTabBar extends StatelessWidget {
       padding: const EdgeInsets.all(SnapSpacing.xs),
       decoration: BoxDecoration(
         color: tokens.surface,
-        borderRadius: BorderRadius.circular(SnapRadius.pill),
+        borderRadius: BorderRadius.circular(SnapRadius.sm),
         border: Border.all(color: tokens.ink, width: SnapTokens.borderWidth),
       ),
       child: Row(
@@ -73,10 +74,14 @@ class _Segment extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: selected ? tokens.lime : Colors.transparent,
-            borderRadius: BorderRadius.circular(SnapRadius.pill),
+            borderRadius: BorderRadius.circular(SnapRadius.sm),
+            border: Border.all(
+              color: selected ? tokens.ink : Colors.transparent,
+              width: SnapTokens.borderWidthThin,
+            ),
           ),
           child: Text(
-            label,
+            label.toUpperCase(),
             style: Theme.of(context).textTheme.labelLarge
                 ?.copyWith(color: tokens.ink),
           ),
@@ -86,7 +91,8 @@ class _Segment extends StatelessWidget {
   }
 }
 
-/// A single filter chip, e.g. Newest / Popular / Free / Pro.
+/// A single filter chip, e.g. Newest / Popular / Free / Pro. Selected
+/// chips fill pink and lift off the canvas with a small hard shadow.
 class PillChip extends StatelessWidget {
   const PillChip({
     required this.label,
@@ -117,14 +123,17 @@ class PillChip extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: selected ? tokens.pink : tokens.surface,
-            borderRadius: BorderRadius.circular(SnapRadius.pill),
+            borderRadius: BorderRadius.circular(SnapRadius.sm),
             border: Border.all(
               color: tokens.ink,
               width: SnapTokens.borderWidth,
             ),
+            boxShadow: selected
+                ? [BoxShadow(color: tokens.ink, offset: SnapShadow.small)]
+                : const [],
           ),
           child: Text(
-            label,
+            label.toUpperCase(),
             style: Theme.of(context).textTheme.labelLarge
                 ?.copyWith(color: tokens.ink),
           ),

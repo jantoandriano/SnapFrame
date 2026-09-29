@@ -65,9 +65,13 @@ class _ChunkyButtonState extends State<ChunkyButton> {
       enabled: widget.onPressed != null || widget.isLoading,
     );
 
+    // The label renders uppercase; semantics keep the original casing so
+    // screen readers don't spell it out letter by letter.
     return Semantics(
       button: true,
       enabled: enabled,
+      label: widget.label,
+      excludeSemantics: true,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: enabled ? (_) => _setPressed(true) : null,
@@ -105,11 +109,11 @@ class _ChunkyButtonState extends State<ChunkyButton> {
                   const LoadingBlob(size: 28),
                   const SizedBox(width: SnapSpacing.sm),
                 ] else if (widget.icon != null) ...[
-                  Icon(widget.icon, size: 20, color: tokens.ink),
+                  Icon(widget.icon, size: 22, color: tokens.ink),
                   const SizedBox(width: SnapSpacing.sm),
                 ],
                 Text(
-                  widget.label,
+                  widget.label.toUpperCase(),
                   style: Theme.of(context).textTheme.titleMedium
                       ?.copyWith(color: tokens.ink),
                 ),

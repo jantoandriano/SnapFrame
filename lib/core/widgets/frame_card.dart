@@ -98,7 +98,7 @@ class FrameCard extends StatelessWidget {
               ),
               const SizedBox(height: SnapSpacing.sm),
               Text(
-                title,
+                title.toUpperCase(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleSmall,
