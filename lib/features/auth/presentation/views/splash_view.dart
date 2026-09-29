@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapframe/app/router.dart';
 import 'package:snapframe/core/theme/theme_extensions.dart';
+import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/widgets/widgets.dart';
 import 'package:snapframe/features/auth/presentation/state/splash_effect.dart';
 import 'package:snapframe/features/auth/presentation/view_models/splash_view_model.dart';
@@ -29,7 +30,17 @@ class SplashView extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: context.tokens.bg,
-      body: const Center(child: LoadingBlob(size: 96)),
+      body: const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Brand name, not UI copy — deliberately not localized.
+            TitleBlock(text: 'SnapFrame', rotationDeg: -3),
+            SizedBox(height: SnapSpacing.xxxl),
+            LoadingBlob(size: 96),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -35,12 +35,8 @@ class LoginView extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  l10n.loginTitle,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                const SizedBox(height: SnapSpacing.xxl),
+                Center(child: TitleBlock(text: l10n.loginTitle)),
+                const SizedBox(height: SnapSpacing.xxxl),
                 if (state.isSignUpMode) ...[
                   BrutalTextField(
                     label: l10n.loginDisplayNameLabel,

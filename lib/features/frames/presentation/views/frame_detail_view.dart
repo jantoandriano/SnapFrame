@@ -40,7 +40,7 @@ class FrameDetailView extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text(state.frame.title)),
+      appBar: SnapAppBar(title: state.frame.title, accent: tokens.lilac),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(SnapSpacing.lg),
@@ -55,7 +55,7 @@ class FrameDetailView extends ConsumerWidget {
                   ),
                   borderRadius: BorderRadius.circular(SnapRadius.lg),
                   boxShadow: [
-                    BoxShadow(color: tokens.ink, offset: SnapShadow.offset),
+                    BoxShadow(color: tokens.ink, offset: SnapShadow.large),
                   ],
                 ),
                 clipBehavior: Clip.hardEdge,
@@ -67,7 +67,7 @@ class FrameDetailView extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: SnapSpacing.lg),
+              const SizedBox(height: SnapSpacing.xl),
               Wrap(
                 spacing: SnapSpacing.sm,
                 children: [
@@ -83,8 +83,10 @@ class FrameDetailView extends ConsumerWidget {
               ),
               const SizedBox(height: SnapSpacing.md),
               Text(
-                l10n.frameDetailSlotCount(state.frame.slots.length),
-                style: Theme.of(context).textTheme.titleMedium,
+                l10n
+                    .frameDetailSlotCount(state.frame.slots.length)
+                    .toUpperCase(),
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: SnapSpacing.xs),
               Text(
@@ -93,8 +95,8 @@ class FrameDetailView extends ConsumerWidget {
               ),
               const SizedBox(height: SnapSpacing.lg),
               Text(
-                l10n.frameDetailTimer,
-                style: Theme.of(context).textTheme.titleMedium,
+                l10n.frameDetailTimer.toUpperCase(),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
               const SizedBox(height: SnapSpacing.sm),
               Align(

@@ -10,4 +10,5 @@ export 'slot_strip.dart';
 export 'snap_app_bar.dart';
 export 'snap_snack.dart';
 export 'sticker_badge.dart';
+export 'title_block.dart';
 export 'xfile_image.dart';

@@ -76,11 +76,8 @@ class _ResultViewState extends ConsumerState<ResultView> {
               padding: const EdgeInsets.all(SnapSpacing.lg),
               child: Column(
                 children: [
-                  Text(
-                    l10n.resultTitle,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  const SizedBox(height: SnapSpacing.lg),
+                  TitleBlock(text: l10n.resultTitle, color: tokens.lime),
+                  const SizedBox(height: SnapSpacing.xl),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -92,7 +89,7 @@ class _ResultViewState extends ConsumerState<ResultView> {
                         boxShadow: [
                           BoxShadow(
                             color: tokens.ink,
-                            offset: SnapShadow.offset,
+                            offset: SnapShadow.large,
                           ),
                         ],
                       ),
@@ -100,7 +97,7 @@ class _ResultViewState extends ConsumerState<ResultView> {
                       child: Image.memory(state.jpegBytes, fit: BoxFit.contain),
                     ),
                   ),
-                  const SizedBox(height: SnapSpacing.lg),
+                  const SizedBox(height: SnapSpacing.xl),
                   BrutalTextField(
                     label: l10n.resultWhatsAppNumber,
                     hintText: l10n.resultWhatsAppNumberHint,

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapframe/app/router.dart';
 import 'package:snapframe/core/theme/theme_extensions.dart';
+import 'package:snapframe/core/theme/tokens.dart';
+import 'package:snapframe/core/utils/haptics.dart';
 import 'package:snapframe/core/widgets/widgets.dart';
 import 'package:snapframe/features/capture/presentation/state/capture_effect.dart';
 import 'package:snapframe/features/capture/presentation/state/capture_phase.dart';
@@ -106,13 +108,12 @@ class _CaptureViewState extends ConsumerState<CaptureView>
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: Text(
-                    l10n.captureSlotLabel(
+                  child: StickerBadge(
+                    label: l10n.captureSlotLabel(
                       state.currentSlotIndex + 1,
                       state.frame.slots.length,
                     ),
-                    style: Theme.of(context).textTheme.titleMedium
-                        ?.copyWith(color: Colors.white),
+                    color: tokens.lime,
                   ),
                 ),
               ),
@@ -130,18 +131,51 @@ class _CaptureViewState extends ConsumerState<CaptureView>
               Positioned(
                 bottom: 24,
                 right: 24,
-                child: Semantics(
-                  button: true,
-                  label: 'switch camera',
-                  child: IconButton(
-                    icon: const Icon(Icons.cameraswitch, color: Colors.white),
-                    iconSize: 32,
-                    onPressed: notifier.onLensTogglePressed,
-                  ),
-                ),
+                child: _LensToggle(onPressed: notifier.onLensTogglePressed),
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Square, hard-shadowed flip-camera button. The shadow is white, not
+/// ink, since it sits on the dark camera background.
+class _LensToggle extends StatelessWidget {
+  const _LensToggle({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    return Semantics(
+      button: true,
+      label: 'switch camera',
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          Haptics.light();
+          onPressed();
+        },
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            color: tokens.sun,
+            borderRadius: BorderRadius.circular(SnapRadius.sm),
+            border: Border.all(
+              color: SnapTokens.light.ink,
+              width: SnapTokens.borderWidth,
+            ),
+            boxShadow: const [
+              BoxShadow(color: Colors.white, offset: SnapShadow.small),
+            ],
+          ),
+          child: Icon(Icons.cameraswitch, color: SnapTokens.light.ink),
         ),
       ),
     );

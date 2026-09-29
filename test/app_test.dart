@@ -17,6 +17,6 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.text("let's get snappy ✦"), findsOneWidget);
+    expect(find.text("LET'S GET SNAPPY ✦"), findsOneWidget);
   });
 }

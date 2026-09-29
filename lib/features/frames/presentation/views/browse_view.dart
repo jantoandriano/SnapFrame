@@ -49,7 +49,7 @@ class BrowseView extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.browseTitle)),
+      appBar: SnapAppBar(title: l10n.browseTitle),
       body: Column(
         children: [
           Padding(
@@ -132,8 +132,8 @@ class _Body extends StatelessWidget {
         padding: const EdgeInsets.all(SnapSpacing.lg),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: SnapSpacing.lg,
-          crossAxisSpacing: SnapSpacing.lg,
+          mainAxisSpacing: SnapSpacing.xl,
+          crossAxisSpacing: SnapSpacing.xl,
           childAspectRatio: 0.62,
         ),
         itemCount: state.frames.length,

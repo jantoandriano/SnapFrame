@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapframe/app/router.dart';
+import 'package:snapframe/core/theme/theme_extensions.dart';
 import 'package:snapframe/core/theme/tokens.dart';
 import 'package:snapframe/core/widgets/widgets.dart';
 import 'package:snapframe/features/capture/presentation/state/review_effect.dart';
@@ -59,9 +60,10 @@ class ReviewView extends ConsumerWidget {
           padding: const EdgeInsets.all(SnapSpacing.lg),
           child: Column(
             children: [
-              Text(
-                l10n.retakeHint,
-                style: Theme.of(context).textTheme.bodyMedium,
+              StickerBadge(
+                label: l10n.retakeHint,
+                color: context.tokens.lilac,
+                rotationDeg: -2,
               ),
               const SizedBox(height: SnapSpacing.md),
               Expanded(
