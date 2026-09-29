@@ -1,9 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:snapframe/app/auth_redirect.dart';
+import 'package:snapframe/features/auth/data/auth_providers.dart';
 import 'package:snapframe/features/auth/presentation/views/login_view.dart';
 import 'package:snapframe/features/auth/presentation/views/splash_view.dart';
 import 'package:snapframe/features/capture/presentation/views/capture_view.dart';
@@ -103,4 +104,23 @@ class ResultRoute extends GoRouteData with $ResultRoute {
 }
 
 @riverpod
-GoRouter goRouter(Ref ref) => GoRouter(routes: $appRoutes);
+GoRouter goRouter(Ref ref) {
+  // Bumped on every session change so GoRouter re-runs [authRedirect]
+  // without the router itself being rebuilt (which would reset the stack).
+  final sessionChanged = ValueNotifier<int>(0);
+  ref
+    ..listen(currentUserStreamProvider, (_, _) => sessionChanged.value++)
+    ..onDispose(sessionChanged.dispose);
+
+  final router = GoRouter(
+    routes: $appRoutes,
+    refreshListenable: sessionChanged,
+    redirect: (context, state) => authRedirect(
+      user: ref.read(currentUserStreamProvider),
+      location: state.matchedLocation,
+      hasExtra: state.extra != null,
+    ),
+  );
+  ref.onDispose(router.dispose);
+  return router;
+}
